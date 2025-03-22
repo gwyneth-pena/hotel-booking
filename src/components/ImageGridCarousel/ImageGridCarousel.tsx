@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
   const swiperRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState(1);
+  const [isEnd, setIsEnd] = useState(false);
   const reducedInfo = props.info.reduce((acc, item) => {
     acc[item._id] = item;
     return acc;
@@ -26,7 +27,10 @@ const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
   return (
     <div className="position-relative">
       <Swiper
-        onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+        onSlideChange={(swiper) => {
+          setActiveIndex(swiper.activeIndex);
+          setIsEnd(swiper.isEnd);
+        }}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         spaceBetween={50}
         pagination={{ clickable: true }}
@@ -74,9 +78,11 @@ const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
         </button>
       )}
 
-      <button className="custom-swiper-button-next shadow" onClick={goNext}>
-        <i className="ti ti-chevron-right"></i>
-      </button>
+      {!isEnd && (
+        <button className="custom-swiper-button-next shadow" onClick={goNext}>
+          <i className="ti ti-chevron-right"></i>
+        </button>
+      )}
     </div>
   );
 };
