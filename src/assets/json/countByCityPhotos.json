@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Boracay",
+    "image": "/src/assets/images/boracay.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Siargao",
+    "image": "/src/assets/images/siargao.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Baguio",
+    "image": "/src/assets/images/baguio.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Iloilo",
+    "image": "/src/assets/images/iloilo.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Palawan",
+    "image": "/src/assets/images/palawan.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Cebu",
+    "image": "/src/assets/images/cebu.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Manila",
+    "image": "/src/assets/images/manila.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Batangas",
+    "image": "/src/assets/images/batangas.jpg"
+  }
+]

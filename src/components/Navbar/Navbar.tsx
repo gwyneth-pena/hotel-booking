@@ -6,7 +6,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg navbar-light bg-primary py-2 py-md-3">
         <div className="container d-flex justify-content-between">
           <a className="navbar-brand text-white" href="/">
-            Hotel Booking
+            ComfyCorners
           </a>
           <button
             className="navbar-toggler"
@@ -38,14 +38,16 @@ const Navbar = () => {
       >
         <div className="offcanvas-header bg-primary">
           <h5 className="offcanvas-title text-white" id="offcanvasLabel">
-            Hotel Booking
+            ComfyCorners
           </h5>
           <button
             type="button"
             className="custom-close-btn ms-auto"
             data-bs-dismiss="offcanvas"
             aria-label="Close"
-          ><i className="ti ti-x"></i></button>
+          >
+            <i className="ti ti-x"></i>
+          </button>
         </div>
         <div className="offcanvas-body">
           <div className="row">

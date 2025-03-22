@@ -19,3 +19,21 @@
 .bg-primary{
   background-color: var(--primary-color) !important;
 }
+
+.btn.btn-dark-blue{
+  padding: 12px 18px;
+  width: auto !important;
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+.btn.btn-dark-blue:hover, .btn.btn-dark-blue:active{
+  background-color: var(--primary-color) !important;
+}
+
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+}
