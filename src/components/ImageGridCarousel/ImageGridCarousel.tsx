@@ -60,9 +60,13 @@ const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
           return (
             <SwiperSlide key={data?.id + data?.name}>
               <div className="card rounded-3 shadow pt-0 px-0">
-                <img className="rounded-3" src={data.image} alt={data.name} />
+                <img
+                  className="rounded-3"
+                  src={data?.image || ""}
+                  alt={data?.name || ""}
+                />
                 <div className="px-2 py-3">
-                  <p className="fw-bold mb-0 pb-0">{data.name}</p>
+                  <p className="fw-bold mb-0 pb-0">{data?.name || "--"}</p>
                   <p className="text-muted mt-0 pt-0">
                     {count || "0"} available properties
                   </p>
