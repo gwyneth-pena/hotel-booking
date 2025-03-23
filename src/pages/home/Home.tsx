@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import config from "../../config";
 import countByCityPhotos from "../../assets/json/countByCityPhotos.json";
 import countByPropertyPhotos from "../../assets/json/countByPropertyPhotos.json";
+import Footer from "../../components/Footer/Footer";
 
 const Home = () => {
   const apiURL = config.apiUrl;
@@ -14,7 +15,7 @@ const Home = () => {
 
   const countByCityReq: any = useAxios(
     "GET",
-    `${apiURL}/hotels?field=city&values=boracay&countOnly=true`
+    `${apiURL}/hotels?field=city&values=boracay,baguio,siargao,iloilo,palawan,cebu,manila,batangas&countOnly=true`
   );
 
   const countByPropertyReq: any = useAxios(
@@ -85,6 +86,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

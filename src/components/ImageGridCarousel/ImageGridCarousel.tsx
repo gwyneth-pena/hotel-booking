@@ -7,7 +7,7 @@ const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
   const swiperRef = useRef<any>(null);
   const [activeIndex, setActiveIndex] = useState(1);
   const [isEnd, setIsEnd] = useState(false);
-  const reducedInfo = props.info.reduce((acc, item) => {
+  const reducedInfo = props.info?.reduce((acc, item) => {
     acc[item._id] = item;
     return acc;
   }, {});
