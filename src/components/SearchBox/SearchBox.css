@@ -1,0 +1,12 @@
+.search-btn{
+  background: #086ce4 !important;
+  border-color: #086ce4 !important;
+  color: white !important;
+  border-radius: 8px;
+  outline: none;
+}
+
+.search-btn:hover{
+    background: #3d8ded !important;
+    color: white !important;
+}

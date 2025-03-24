@@ -7,6 +7,7 @@ import config from "../../config";
 import countByCityPhotos from "../../assets/json/countByCityPhotos.json";
 import countByPropertyPhotos from "../../assets/json/countByPropertyPhotos.json";
 import Footer from "../../components/Footer/Footer";
+import SearchBox from "../../components/SearchBox/SearchBox";
 
 const Home = () => {
   const apiURL = config.apiUrl;
@@ -57,6 +58,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <SearchBox/>
       <div className="container py-3 mt-5">
         <div className="row">
           <div className="col-12">
