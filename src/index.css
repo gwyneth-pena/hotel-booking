@@ -42,6 +42,30 @@
 }
 
 
+.p-datepicker-month{
+  margin-right: 10px;
+}
+
+.p-highlight{
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.p-datepicker-today > span{
+  background-color: lightblue;
+  color: #474747;
+}
+
+.p-datepicker-prev, .p-datepicker-next, .p-datepicker-month, .p-datepicker-year{
+  color: var(--primary-color);
+}
+
+.p-datepicker{
+  background: white !important;
+  color: #474747 !important;
+}
+
+
 @media (min-width: 1200px) {
   .container {
     max-width: 1200px;

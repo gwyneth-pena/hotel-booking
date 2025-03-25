@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-import "./Home.css";
 import ImageGridCarousel from "../../components/ImageGridCarousel/ImageGridCarousel";
 import useAxios from "../../hooks/useAxios";
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import countByCityPhotos from "../../assets/json/countByCityPhotos.json";
 import countByPropertyPhotos from "../../assets/json/countByPropertyPhotos.json";
 import Footer from "../../components/Footer/Footer";
 import SearchBox from "../../components/SearchBox/SearchBox";
+import "./Home.css";
 
 const Home = () => {
   const apiURL = config.apiUrl;
@@ -42,7 +42,7 @@ const Home = () => {
           content="Find the best hotel deals. Compare prices, book luxury stays, and enjoy exclusive offers on ComfyCorners"
         />
       </Helmet>
-      <div className="home-banner">
+      <div className="home-banner pb-4">
         <div className="container">
           <div className="row">
             <div className="col-12 col-md-7 py-5 my-4">
@@ -58,7 +58,9 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <SearchBox/>
+      <div style={{marginTop: '-35px'}}>
+        <SearchBox />
+      </div>
       <div className="container py-3 mt-5">
         <div className="row">
           <div className="col-12">
@@ -88,7 +90,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

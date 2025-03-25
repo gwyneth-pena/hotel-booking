@@ -3,7 +3,7 @@ import { AutoComplete } from "primereact/autocomplete";
 import { Calendar } from "primereact/calendar";
 import { InputNumber } from "primereact/inputnumber";
 import _ from "lodash";
-import './SearchBox.css';
+import "./SearchBox.css";
 
 import config from "../../config";
 
@@ -39,7 +39,7 @@ const SearchBox = () => {
     <>
       <div className="container bg-yellow py-2">
         <div className="row">
-          <div className="col-12 col-md-4">
+          <div className="col-12 col-md-4 mt-2 mt-md-0">
             <AutoComplete
               value={selectedCity}
               suggestions={filteredCities}
@@ -58,7 +58,7 @@ const SearchBox = () => {
               placeholder="Where are you going?"
             />
           </div>
-          <div className="col-12 col-md-3">
+          <div className="col-12 col-md-3 mt-2 mt-md-0">
             <Calendar
               value={dates}
               onChange={(e) => setDates(e.value)}
@@ -78,34 +78,35 @@ const SearchBox = () => {
               placeholder="Check-in and Check-out Dates"
             />
           </div>
-          <div className="col-12 col-md-4">
+          <div className="col-12 col-md-4 mt-2 mt-md-0">
             <InputNumber
               value={numberOfPax}
-              onValueChange={(e: any) =>
-                setNumberOfPax(e.value)
-              }
+              onValueChange={(e: any) => setNumberOfPax(e.value)}
               showButtons
               buttonLayout="horizontal"
               step={1}
-              min={0}
-              decrementButtonClassName="bg-dark-primary"
-              incrementButtonClassName="bg-dark-primary"
+              min={1}
+              decrementButtonClassName="btn-increment-decrement"
+              incrementButtonClassName="btn-increment-decrement"
               incrementButtonIcon="ti ti-plus"
               decrementButtonIcon="ti ti-minus"
               inputStyle={{
-                height:'50px',
-                width: '100%',
-                padding: '0 15px',
-                fontSize: "16px"
+                height: "50px",
+                width: "100%",
+                padding: "0 15px",
+                fontSize: "16px",
               }}
               style={{
-                width: '100%'
+                width: "100%",
               }}
+              placeholder="Number of Pax"
             />
           </div>
-          <button className="col-12 col-md-1 search-btn" type="button">
-            Search
-          </button>
+          <div className="col-12 col-md-1 mt-2 mt-md-0">
+            <button className="btn-search" type="button">
+              Search
+            </button>
+          </div>
         </div>
       </div>
     </>
