@@ -39,7 +39,7 @@ const Home = () => {
         </title>
         <meta
           name="description"
-          content="Find the best hotel deals. Compare prices, book luxury stays, and enjoy exclusive offers on ComfyCorners"
+          content="Find the best deals. Compare prices, book luxury stays, and enjoy exclusive offers on ComfyCorners"
         />
       </Helmet>
       <div className="home-banner pb-4">
@@ -58,7 +58,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div style={{marginTop: '-35px'}}>
+      <div style={{ marginTop: "-35px" }}>
         <SearchBox />
       </div>
       <div className="container py-3 mt-5">

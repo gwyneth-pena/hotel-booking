@@ -6,13 +6,16 @@ import _ from "lodash";
 import "./SearchBox.css";
 
 import config from "../../config";
+import { useNavigate } from "react-router-dom";
 
-const SearchBox = () => {
+const SearchBox = ({ ...props }: any) => {
   const placesUrl = config.placesUrl;
+  const today = new Date();
   const [filteredCities, setFilteredCities] = useState<any[]>([]);
-  const [selectedCity, setSelectedCity] = useState<any>(null);
-  const [dates, setDates] = useState<any>(null);
-  const [numberOfPax, setNumberOfPax] = useState(0);
+  const [selectedCity, setSelectedCity] = useState<any>(props.city || null);
+  const [dates, setDates] = useState<any>(props.dates || [today, today]);
+  const [numberOfPax, setNumberOfPax] = useState(props.pax || 0);
+  const navigate = useNavigate();
 
   const searchCity = async (event: any) => {
     const query = event.query;
@@ -35,10 +38,40 @@ const SearchBox = () => {
 
   const debouncedFetch = useCallback(_.debounce(searchCity, 500), []);
 
+  const search: any = (e: Event) => {
+    e.preventDefault();
+
+    const city = selectedCity?.shortname || selectedCity;
+    const checkInDate = dates[0]?.toISOString().split("T")[0];
+    const checkOutDate = dates[1]?.toISOString().split("T")[0];
+    const numOfPax = numberOfPax.toString();
+
+    const params = new URLSearchParams({
+      place: city,
+      checkInDate,
+      checkOutDate,
+      pax: numOfPax,
+    });
+    if(props.handleSearchEvent){
+      props.handleSearchEvent();
+    }
+    navigate(`/searchresults?${params.toString()}`, { state: { place: city } });
+  };
+
+  const handleDateChange = (e: any) => {
+    let selectedDate = e.value;
+    if (selectedDate) {
+      selectedDate[0]?.setUTCHours(0, 0, 0, 0);
+      selectedDate[1]?.setUTCHours(0, 0, 0, 0);
+      selectedDate[1]?.setUTCDate(selectedDate[1].getUTCDate() + 1);
+    }
+    setDates(selectedDate);
+  };
+
   return (
     <>
       <div className="container bg-yellow py-2">
-        <div className="row">
+        <form className="row" onSubmit={search}>
           <div className="col-12 col-md-4 mt-2 mt-md-0">
             <AutoComplete
               value={selectedCity}
@@ -56,12 +89,16 @@ const SearchBox = () => {
                 outline: "none",
               }}
               placeholder="Where are you going?"
+              required
             />
           </div>
           <div className="col-12 col-md-3 mt-2 mt-md-0">
             <Calendar
               value={dates}
-              onChange={(e) => setDates(e.value)}
+              dateFormat="yy-mm-dd"
+              numberOfMonths={2}
+              minDate={new Date(new Date().setUTCHours(0, 0, 0, 0))}
+              onChange={handleDateChange}
               selectionMode="range"
               readOnlyInput
               hideOnRangeSelection
@@ -103,11 +140,11 @@ const SearchBox = () => {
             />
           </div>
           <div className="col-12 col-md-1 mt-2 mt-md-0">
-            <button className="btn-search" type="button">
+            <button className="btn-search" type="submit">
               Search
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );
