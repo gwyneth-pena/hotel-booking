@@ -7,13 +7,16 @@ import "./SearchBox.css";
 
 import config from "../../config";
 import { useNavigate } from "react-router-dom";
+import { formatDate, isSameDate } from "../../utils/dates";
 
 const SearchBox = ({ ...props }: any) => {
   const placesUrl = config.placesUrl;
   const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
   const [filteredCities, setFilteredCities] = useState<any[]>([]);
   const [selectedCity, setSelectedCity] = useState<any>(props.city || null);
-  const [dates, setDates] = useState<any>(props.dates || [today, today]);
+  const [dates, setDates] = useState<any>(props.dates || [today, tomorrow]);
   const [numberOfPax, setNumberOfPax] = useState(props.pax || 0);
   const navigate = useNavigate();
 
@@ -42,8 +45,13 @@ const SearchBox = ({ ...props }: any) => {
     e.preventDefault();
 
     const city = selectedCity?.shortname || selectedCity;
-    const checkInDate = dates[0]?.toISOString().split("T")[0];
-    const checkOutDate = dates[1]?.toISOString().split("T")[0];
+    const checkInDate = formatDate(dates[0]);
+    const defaultEndDate = new Date(checkInDate);
+    defaultEndDate.setDate(defaultEndDate.getDate() + 1);
+    let checkOutDate = dates[1];
+    checkOutDate = checkOutDate
+      ? formatDate(dates[1])
+      : formatDate(defaultEndDate);
     const numOfPax = numberOfPax.toString();
 
     const params = new URLSearchParams({
@@ -52,19 +60,44 @@ const SearchBox = ({ ...props }: any) => {
       checkOutDate,
       pax: numOfPax,
     });
-    if(props.handleSearchEvent){
+    if (props.handleSearchEvent) {
       props.handleSearchEvent();
     }
     navigate(`/searchresults?${params.toString()}`, { state: { place: city } });
   };
 
   const handleDateChange = (e: any) => {
-    let selectedDate = e.value;
-    if (selectedDate) {
-      selectedDate[0]?.setUTCHours(0, 0, 0, 0);
-      selectedDate[1]?.setUTCHours(0, 0, 0, 0);
-      selectedDate[1]?.setUTCDate(selectedDate[1].getUTCDate() + 1);
+    const selectedDate = e.value;
+
+    if (selectedDate && selectedDate[0]) {
+      const start = selectedDate[0];
+      const end = selectedDate[1];
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const picked = new Date(start);
+      picked.setHours(0, 0, 0, 0);
+
+      if (picked.getTime() < tomorrow.getTime()) {
+        start.setHours(0, 0, 0, 0);
+      } else {
+        start.setHours(23, 59, 59, 999);
+      }
+
+      const sameAsToday = isSameDate(today, start) && isSameDate(today, end);
+      if (start?.getTime() === end?.getTime() || sameAsToday) {
+        end.setDate(end.getDate() + 1);
+        selectedDate[1] = end;
+        if (sameAsToday) {
+          selectedDate[0] = today;
+        }
+      }
     }
+
     setDates(selectedDate);
   };
 

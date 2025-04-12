@@ -58,7 +58,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div style={{ marginTop: "-35px" }}>
+      <div style={{ marginTop: "-35px" }} className="col px-0 py-0">
         <SearchBox />
       </div>
       <div className="container py-3 mt-5">
