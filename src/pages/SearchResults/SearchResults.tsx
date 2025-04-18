@@ -10,9 +10,11 @@ import { getTotalNights, toTitleCase } from "../../utils/strings";
 import clsx from "clsx";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import Footer from "../../components/Footer/Footer";
+import { Filters } from "../../components/Filters/Filters";
 
 const SearchResults = () => {
   const [results, setResults] = useState([]);
+  const [initResults, setInitResults] = useState([]);
   const [isList, setIsList] = useState(true);
   const [searchParams] = useSearchParams();
   const screenWidth = useScreenWidth();
@@ -27,7 +29,6 @@ const SearchResults = () => {
   }, [searchParams]);
 
   const fetchHotels = async () => {
-    
     const checkInDate = searchParams.get("checkInDate") || "";
     const checkOutDate = searchParams.get("checkOutDate") || "";
 
@@ -44,7 +45,24 @@ const SearchResults = () => {
           totalNights: getTotalNights(checkOutDate, checkInDate),
         };
       }) || [];
+    setInitResults(data);
     setResults(data);
+  };
+
+  const handleOnChangeFilter = (data: any) => {
+    const filters = Object.keys(data).filter((key: string) => {
+      return data[key].checked;
+    });
+    if (filters.length == 0) {
+      setResults(initResults);
+      return;
+    }
+    const newResults = initResults.filter((res: any) => {
+      return filters.some((filter: string) =>
+        res.type?.toLowerCase().includes(filter.toLowerCase())
+      );
+    });
+    setResults(newResults);
   };
 
   return (
@@ -78,7 +96,9 @@ const SearchResults = () => {
 
       <div className="container results-container py-3">
         <div className="row">
-          <div className="d-block d-md-none d-lg-block col-lg-3"></div>
+          <div className="d-block d-md-none d-lg-block col-lg-3">
+            <Filters onChangeFilter={handleOnChangeFilter} />
+          </div>
           <div className="col col-lg-9">
             <div className="row">
               <div className="col-12 col-md-9 d-flex justify-content-start ms-md-0 ps-md-0">
@@ -136,124 +156,130 @@ const SearchResults = () => {
                   </ToggleButton>
                 </ToggleButtonGroup>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container py-3">
-        <div className="row">
-          <div className="d-block d-md-none d-lg-block col-lg-3"></div>
-          <div className="col col-md-12 col-lg-9">
-            <div className="row">
-              <div
-                className={clsx({
-                  "col-12": isList || (!isList && screenWidth < 621),
-                  "col-4": !isList,
-                  "px-4": !isList && screenWidth < 621,
-                })}
-              >
-                {results.map((data: any, idx: number) => {
-                  return (
-                    <div
-                      key={idx}
-                      className={clsx("row result-card", {
-                        "d-flex": !isList,
-                        "flex-column": !isList,
-                      })}
-                    >
+              <div className="col-12 py-3">
+                <div className="row">
+                  <div className="col-12">
+                    <div className="row">
                       <div
-                        className={clsx("col-4 image", {
-                          "col-12": !isList,
+                        className={clsx({
+                          "col-12": isList || (!isList && screenWidth < 621),
+                          "col-4": !isList,
+                          "px-4": !isList && screenWidth < 621,
                         })}
                       >
-                        <img
-                          src={
-                            data.photos?.length > 0
-                              ? data.photos[0]
-                              : "/src/assets/images/default-img.jpg"
-                          }
-                          alt={data?.name}
-                          width={"100%"}
-                        />
-                      </div>
-                      <div
-                        className={clsx("col-6 body", {
-                          "col-12": !isList,
-                        })}
-                      >
-                        <p
-                          className={clsx("title", {
-                            "mt-2": !isList,
-                          })}
-                        >
-                          {toTitleCase(data?.name)}
-                        </p>
-                        <p className="address">{toTitleCase(data?.address)}</p>
-                        <div className="desc">
-                          {data.availableRooms?.map(
-                            (room: any, idx: number) => {
-                              return (
-                                <p key={idx}>
-                                  <span className="bg-dirty-white p-1 me-2">
-                                    {room.maxPeople + "x"}
-                                  </span>
-                                  {room.description}
+                        {results.map((data: any, idx: number) => {
+                          return (
+                            <div
+                              key={idx}
+                              className={clsx("row result-card", {
+                                "d-flex": !isList,
+                                "flex-column": !isList,
+                              })}
+                            >
+                              <div
+                                className={clsx("col-4 image", {
+                                  "col-12": !isList,
+                                })}
+                              >
+                                <img
+                                  src={
+                                    data.photos?.length > 0
+                                      ? data.photos[0]
+                                      : "/src/assets/images/default-img.jpg"
+                                  }
+                                  alt={data?.name}
+                                  width={"100%"}
+                                />
+                              </div>
+                              <div
+                                className={clsx("col-6 body", {
+                                  "col-12": !isList,
+                                })}
+                              >
+                                <p
+                                  className={clsx("title", {
+                                    "mt-2": !isList,
+                                  })}
+                                >
+                                  {toTitleCase(data?.name)}
                                 </p>
-                              );
-                            }
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={clsx("col-2", {
-                          "col-12 d-flex justify-content-between": !isList,
+                                <p className="address">
+                                  {toTitleCase(data?.address)}
+                                </p>
+                                <div className="desc">
+                                  {data.availableRooms?.map(
+                                    (room: any, idx: number) => {
+                                      return (
+                                        <p key={idx}>
+                                          <span className="bg-dirty-white p-1 me-2">
+                                            {room.maxPeople + "x"}
+                                          </span>
+                                          {room.description}
+                                        </p>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              </div>
+                              <div
+                                className={clsx("col-2", {
+                                  "col-12 d-flex justify-content-between":
+                                    !isList,
+                                })}
+                              >
+                                <div
+                                  className={clsx("d-flex", {
+                                    "justify-content-end": isList,
+                                    "justify-content-start mt-3": !isList,
+                                  })}
+                                >
+                                  <p>
+                                    <span className="rating-text">
+                                      Very Good
+                                    </span>
+                                    <span className="text-end rating">
+                                      {data?.rating || 0}/5
+                                    </span>
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="purchase">
+                                    {data?.totalNights}{" "}
+                                    {data?.totalNights > 1 ? "nights" : "night"}
+                                    , {searchParams.get("pax")}{" "}
+                                    {parseInt(searchParams.get("pax") || "1") >
+                                    1
+                                      ? "adults"
+                                      : "adult"}
+                                  </p>
+                                  <p className="price">
+                                    Php{" "}
+                                    {data?.availableRooms[0]?.price *
+                                      data?.totalNights}
+                                  </p>
+                                  <button
+                                    className={clsx("link", {
+                                      "d-none": !isList,
+                                    })}
+                                  >
+                                    See Availability{" "}
+                                    <i className="ti ti-chevrons-right"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          );
                         })}
-                      >
-                        <div
-                          className={clsx("d-flex", {
-                            "justify-content-end": isList,
-                            "justify-content-start mt-3": !isList,
-                          })}
-                        >
-                          <p>
-                            <span className="rating-text">Very Good</span>
-                            <span className="text-end rating">
-                              {data?.rating || 0}/5
-                            </span>
-                          </p>
-                        </div>
-                        <div>
-                          <p className="purchase">
-                            {data?.totalNights}{" "}
-                            {data?.totalNights > 1 ? "nights" : "night"},{" "}
-                            {searchParams.get("pax")}{" "}
-                            {parseInt(searchParams.get("pax") || "1") > 1
-                              ? "adults"
-                              : "adult"}
-                          </p>
-                          <p className="price">
-                            Php{" "}
-                            {data?.availableRooms[0]?.price * data?.totalNights}
-                          </p>
-                          <button
-                            className={clsx("link", {
-                              "d-none": !isList,
-                            })}
-                          >
-                            See Availability{" "}
-                            <i className="ti ti-chevrons-right"></i>
-                          </button>
-                        </div>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </>
   );
