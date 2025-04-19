@@ -38,7 +38,7 @@ const ResultCard = ({ data }: { data: any }) => {
           src={
             data.photos?.length > 0
               ? data.photos[0]
-              : "/src/assets/images/default-img.jpg"
+              : "/images/default-img.jpg"
           }
           alt={data.name}
           width={"100%"}
