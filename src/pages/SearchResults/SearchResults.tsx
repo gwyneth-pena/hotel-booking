@@ -11,6 +11,7 @@ import clsx from "clsx";
 import useScreenWidth from "../../hooks/useScreenWidth";
 import Footer from "../../components/Footer/Footer";
 import { Filters } from "../../components/Filters/Filters";
+import ResultCard from "../../components/ResultCard/ResultCard";
 
 const SearchResults = () => {
   const [results, setResults] = useState([]);
@@ -49,7 +50,7 @@ const SearchResults = () => {
     setResults(data);
   };
 
-  const handleOnChangeFilter = (data: any) => {
+  const filterData = (data: any) => {
     const filters = Object.keys(data).filter((key: string) => {
       return data[key].checked;
     });
@@ -97,7 +98,7 @@ const SearchResults = () => {
       <div className="container results-container py-3">
         <div className="row">
           <div className="d-block d-md-none d-lg-block col-lg-3">
-            <Filters onChangeFilter={handleOnChangeFilter} />
+            <Filters onChangeFilter={filterData} />
           </div>
           <div className="col col-lg-9">
             <div className="row">
@@ -169,105 +170,14 @@ const SearchResults = () => {
                       >
                         {results.map((data: any, idx: number) => {
                           return (
-                            <div
+                            <ResultCard
                               key={idx}
-                              className={clsx("row result-card", {
-                                "d-flex": !isList,
-                                "flex-column": !isList,
-                              })}
-                            >
-                              <div
-                                className={clsx("col-4 image", {
-                                  "col-12": !isList,
-                                })}
-                              >
-                                <img
-                                  src={
-                                    data.photos?.length > 0
-                                      ? data.photos[0]
-                                      : "/src/assets/images/default-img.jpg"
-                                  }
-                                  alt={data?.name}
-                                  width={"100%"}
-                                />
-                              </div>
-                              <div
-                                className={clsx("col-6 body", {
-                                  "col-12": !isList,
-                                })}
-                              >
-                                <p
-                                  className={clsx("title", {
-                                    "mt-2": !isList,
-                                  })}
-                                >
-                                  {toTitleCase(data?.name)}
-                                </p>
-                                <p className="address">
-                                  {toTitleCase(data?.address)}
-                                </p>
-                                <div className="desc">
-                                  {data.availableRooms?.map(
-                                    (room: any, idx: number) => {
-                                      return (
-                                        <p key={idx}>
-                                          <span className="bg-dirty-white p-1 me-2">
-                                            {room.maxPeople + "x"}
-                                          </span>
-                                          {room.description}
-                                        </p>
-                                      );
-                                    }
-                                  )}
-                                </div>
-                              </div>
-                              <div
-                                className={clsx("col-2", {
-                                  "col-12 d-flex justify-content-between":
-                                    !isList,
-                                })}
-                              >
-                                <div
-                                  className={clsx("d-flex", {
-                                    "justify-content-end": isList,
-                                    "justify-content-start mt-3": !isList,
-                                  })}
-                                >
-                                  <p>
-                                    <span className="rating-text">
-                                      Very Good
-                                    </span>
-                                    <span className="text-end rating">
-                                      {data?.rating || 0}/5
-                                    </span>
-                                  </p>
-                                </div>
-                                <div>
-                                  <p className="purchase">
-                                    {data?.totalNights}{" "}
-                                    {data?.totalNights > 1 ? "nights" : "night"}
-                                    , {searchParams.get("pax")}{" "}
-                                    {parseInt(searchParams.get("pax") || "1") >
-                                    1
-                                      ? "adults"
-                                      : "adult"}
-                                  </p>
-                                  <p className="price">
-                                    Php{" "}
-                                    {data?.availableRooms[0]?.price *
-                                      data?.totalNights}
-                                  </p>
-                                  <button
-                                    className={clsx("link", {
-                                      "d-none": !isList,
-                                    })}
-                                  >
-                                    See Availability{" "}
-                                    <i className="ti ti-chevrons-right"></i>
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
+                              data={{
+                                ...data,
+                                targetPax: searchParams.get("pax"),
+                                isList: isList,
+                              }}
+                            />
                           );
                         })}
                       </div>
