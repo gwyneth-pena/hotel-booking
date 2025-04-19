@@ -2,36 +2,36 @@
   {
     "id": 1,
     "name": "Hotels",
-    "image": "/src/assets/images/hotel.jpg"
+    "image": "/images/hotel.jpg"
   },
   {
     "id": 2,
     "name": "Apartments",
-    "image": "/src/assets/images/apartment.jpg"
+    "image": "/images/apartment.jpg"
   },
   {
     "id": 3,
     "name": "Resorts",
-    "image": "/src/assets/images/resorts.jpg"
+    "image": "/images/resorts.jpg"
   },
   {
     "id": 4,
     "name": "Villas",
-    "image": "/src/assets/images/villas.jpg"
+    "image": "/images/villas.jpg"
   },
   {
     "id": 5,
     "name": "Holiday Homes",
-    "image": "/src/assets/images/holidayhome.jpg"
+    "image": "/images/holidayhome.jpg"
   },
   {
     "id": 6,
     "name": "Guest Houses",
-    "image": "/src/assets/images/guesthouse.jpg"
+    "image": "/images/guesthouse.jpg"
   },
   {
     "id": 7,
     "name": "Campsites",
-    "image": "/src/assets/images/campsite.jpg"
+    "image": "/images/campsite.jpg"
   }
 ]
