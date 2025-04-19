@@ -114,7 +114,7 @@ const SearchResults = () => {
                   value={isList}
                   exclusive
                   onChange={(event: any, data: boolean) => {
-                    if (data !== null) {
+                    if (data !== null && event) {
                       setIsList(data);
                     }
                   }}
