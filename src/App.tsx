@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import Home from "./pages/Home/Home";
+import Home from "./pages/home/Home";
 import Navbar from "./components/Navbar/Navbar";
 import SearchResults from "./pages/SearchResults/SearchResults";
 import { PropertyInfo } from "./pages/PropertyInfo/PropertyInfo";
