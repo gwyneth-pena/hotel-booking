@@ -1,0 +1,33 @@
+.box-header {
+  height: 60px;
+}
+
+.info-container {
+  margin-top: 50px;
+}
+
+.info-table > thead {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.info-table td,
+.info-table th {
+  padding: 12px 15px;
+}
+
+.info-table > tbody > tr > td {
+  border: 1px solid rgb(137, 193, 227);
+}
+
+@media screen and (max-width: 768px) {
+  .info-container {
+    margin-top: 50px;
+  }
+}
+
+@media screen and (max-width: 766px) {
+  .info-container {
+    margin-top: 230px !important;
+  }
+}

@@ -65,9 +65,10 @@
     font-weight: bold;
 }
 
-.result-card button{
+.result-card .button{
     background-color: var(--primary-color);
     color: #fff;
     font-size: 13px;
+    text-decoration: none;
     padding: 5px 8px;
 }

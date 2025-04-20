@@ -175,7 +175,10 @@ const SearchResults = () => {
                               data={{
                                 ...data,
                                 targetPax: searchParams.get("pax"),
+                                place: searchParams.get("place"),
                                 isList: isList,
+                                checkInDate: searchParams.get("checkInDate"),
+                                checkOutDate: searchParams.get("checkOutDate"),
                               }}
                             />
                           );

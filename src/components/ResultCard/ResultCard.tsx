@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { toTitleCase } from "../../utils/strings";
 import "./ResultCard.css";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const ResultCard = ({ data }: { data: any }) => {
   const [recommendedRooms, setRecommendedRooms] = useState<any[]>([]);
@@ -36,9 +37,7 @@ const ResultCard = ({ data }: { data: any }) => {
       >
         <img
           src={
-            data.photos?.length > 0
-              ? data.photos[0]
-              : "/images/default-img.jpg"
+            data.photos?.length > 0 ? data.photos[0] : "/images/default-img.jpg"
           }
           alt={data.name}
           width={"100%"}
@@ -93,13 +92,14 @@ const ResultCard = ({ data }: { data: any }) => {
             {parseInt(data.targetPax || "1") > 1 ? "adults" : "adult"}
           </p>
           <p className="price">Php {totalPrice * data.totalNights}</p>
-          <button
-            className={clsx("link", {
+          <Link
+            to={`/property/${data._id}?place=${data.place}&checkInDate=${data.checkInDate}&checkOutDate=${data.checkOutDate}&pax=${data.targetPax}`}
+            className={clsx("button", {
               "d-none": !data.isList,
             })}
           >
             See Availability <i className="ti ti-chevrons-right"></i>
-          </button>
+          </Link>
         </div>
       </div>
     </div>
