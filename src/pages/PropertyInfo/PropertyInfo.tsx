@@ -7,7 +7,7 @@ import config from "../../config";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import { getTotalNights } from "../../utils/strings";
 
-export const PropertyInfo = () => {
+const PropertyInfo = () => {
   const apiURL = config.apiUrl;
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -113,7 +113,7 @@ export const PropertyInfo = () => {
                       </td>
                       <td>{room.maxPeople}</td>
                       <td className="fw-bold">
-                        Php {propertyInfo?.totalNights * parseInt(room.price)}
+                        Php {(propertyInfo?.totalNights * parseInt(room.price)).toLocaleString()}
                       </td>
                     </tr>
                   );
@@ -126,3 +126,5 @@ export const PropertyInfo = () => {
     </>
   );
 };
+
+export default PropertyInfo;

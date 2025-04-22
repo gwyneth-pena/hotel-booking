@@ -53,7 +53,7 @@ const Home = () => {
                 Unwind and indulge in the comfort of home at these hotels and
                 homestays in the Philippines.
               </p>
-              <button className="btn btn-dark-blue">Book yours</button>
+              <button className="btn btn-dark-blue w-25">Book yours</button>
             </div>
           </div>
         </div>

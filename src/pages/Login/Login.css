@@ -1,0 +1,21 @@
+.login-form-container {
+  width: 30%;
+}
+
+.login-form-container input {
+  border: 1px solid #6f6f6f;
+}
+
+.login-form-container .input-group input {
+  border-right: none;
+}
+
+.login-form-container .input-group .input-group-text {
+  border: 1px solid #6f6f6f;
+}
+
+@media screen and (max-width: 980px) {
+  .login-form-container {
+    width: 90%;
+  }
+}

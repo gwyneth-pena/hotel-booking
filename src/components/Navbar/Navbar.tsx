@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -24,9 +25,9 @@ const Navbar = () => {
               <button type="button" className="btn me-3">
                 Register
               </button>
-              <button type="button" className="btn">
+              <Link to="/login" className="btn">
                 Sign in
-              </button>
+              </Link>
             </ul>
           </div>
         </div>
@@ -51,14 +52,14 @@ const Navbar = () => {
         </div>
         <div className="offcanvas-body">
           <div className="row">
-            <a className="col-12">
+            <Link to="" className="col-12">
               <i className="ti ti-users-plus me-4"></i>Register
-            </a>
+            </Link>
           </div>
           <div className="row">
-            <a className="col-12">
+            <Link to="/login" className="col-12">
               <i className="ti ti-login me-4"></i>Sign in
-            </a>
+            </Link>
           </div>
         </div>
       </div>

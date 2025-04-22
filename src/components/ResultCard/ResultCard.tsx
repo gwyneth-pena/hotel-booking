@@ -91,7 +91,7 @@ const ResultCard = ({ data }: { data: any }) => {
             {data.targetPax}{" "}
             {parseInt(data.targetPax || "1") > 1 ? "adults" : "adult"}
           </p>
-          <p className="price">Php {totalPrice * data.totalNights}</p>
+          <p className="price">Php {(totalPrice * data.totalNights).toLocaleString()}</p>
           <Link
             to={`/property/${data._id}?place=${data.place}&checkInDate=${data.checkInDate}&checkOutDate=${data.checkOutDate}&pax=${data.targetPax}`}
             className={clsx("button", {
