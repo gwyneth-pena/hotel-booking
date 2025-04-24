@@ -7,22 +7,33 @@ import SearchResults from "./pages/SearchResults/SearchResults";
 import PropertyInfo from "./pages/PropertyInfo/PropertyInfo";
 import Login from "./pages/Login/Login";
 import { AuthProvider } from "./context/AuthContext";
+import axios from "axios";
+import PublicRoute from "./utils/PublicRoute";
+
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <>
       <HelmetProvider>
-        <AuthProvider>
-          <Router>
+        <Router>
+          <AuthProvider>
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <Login />
+                  </PublicRoute>
+                }
+              />
               <Route path="/searchresults" element={<SearchResults />} />
               <Route path="/property/:id" element={<PropertyInfo />} />
             </Routes>
-          </Router>
-        </AuthProvider>
+          </AuthProvider>
+        </Router>
       </HelmetProvider>
     </>
   );

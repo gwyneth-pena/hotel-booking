@@ -1,35 +1,35 @@
-.navbar-brand{
-    font-size: 1.25rem !important;
-    font-weight: 500;
+.navbar-brand {
+  font-size: 1.25rem !important;
+  font-weight: 500;
 }
 
 .navbar-toggler,
 .navbar-toggler:focus,
 .navbar-toggler:active,
 .navbar-toggler-icon:focus {
-    outline: none;
-    border: none;
-    box-shadow: none;
-    padding-right: 0 !important;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  padding-right: 0 !important;
 }
 
-.navbar-toggler i{
-    color: #fff !important;
-    font-size: 30px !important;
+.navbar-toggler i {
+  color: #fff !important;
+  font-size: 30px !important;
 }
 
-.btn{
-    background: white;
-    width: 80px;
-    font-size: 15px;
-    color: var(--primary-color);
-    font-weight: 600;
-    border-radius: 4px !important;
-    border-color: 1px solid var(--primary-color);
+.btn {
+  background: white;
+  width: 80px;
+  font-size: 15px;
+  color: var(--primary-color);
+  font-weight: 600;
+  border-radius: 4px !important;
+  border-color: 1px solid var(--primary-color);
 }
 
-.btn-close{
-    color: #fff !important;
+.btn-close {
+  color: #fff !important;
 }
 
 .custom-close-btn {
@@ -40,26 +40,31 @@
   cursor: pointer;
 }
 
-.offcanvas a{
-    color: var(--primary-color);
-    text-decoration: none;
-    border-top: 1px solid  rgb(208, 208, 208);
-    border-bottom: 1px solid rgb(208, 208, 208);
-    width: 100% !important;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    font-weight: 700;
+.offcanvas a {
+  color: var(--primary-color);
+  text-decoration: none;
+  border-top: 1px solid rgb(208, 208, 208);
+  border-bottom: 1px solid rgb(208, 208, 208);
+  width: 100% !important;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-weight: 700;
 }
 
-.offcanvas a > i{
-    font-size: 20px;
+.offcanvas a > i {
+  font-size: 20px;
 }
 
-.offcanvas a:active{
-    background-color: lightgrey;
+.offcanvas a:active {
+  background-color: lightgrey;
 }
 
-.btn:hover, .btn:active{
-    background-color: #f3f3f3 !important;
-    border-radius: 4px !important;
+.btn:hover,
+.btn:active {
+  background-color: #f3f3f3 !important;
+  border-radius: 4px !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

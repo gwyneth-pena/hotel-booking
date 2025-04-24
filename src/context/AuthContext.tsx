@@ -1,4 +1,15 @@
-import { createContext, useContext, useReducer, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
+import { decodeToken, isTokenValid } from "../utils/token";
+import axios from "axios";
+import config from "../config";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   token: localStorage.getItem("token") || null,
@@ -30,20 +41,58 @@ const AuthReducer = (state: any, action: any) => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const apiURL = config.apiUrl;
+  const navigate = useNavigate();
   const [state, dispatch] = useReducer(AuthReducer, initialState);
+  const [initialized, setInitialized] = useState(false);
 
   const login = (data: any) => {
     localStorage.setItem("token", data.token);
     dispatch({ type: "LOGIN", payload: data });
+    navigate("/");
   };
 
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
+    const loggedOutRes = await axios.post(`${apiURL}/auth/logout`);
+    if (loggedOutRes.status === 200) navigate("/");
   };
 
+  const getUser = async (id: string) => {
+    try {
+      const userReq = await axios.get(`${apiURL}/users/my-data/${id}`);
+      return userReq.data;
+    } catch (e) {
+      logout();
+    }
+  };
+
+  useEffect(() => {
+    const token = window?.localStorage?.getItem("token") || "";
+    const isValidToken = isTokenValid(token);
+    if (!isValidToken) {
+      logout();
+      setInitialized(true);
+    } else {
+      const decoded: any = decodeToken(token);
+      login({ token });
+      (async () => {
+        if (!state.user) {
+          const user = await getUser(decoded["id"]);
+          if (user) {
+            login({ token, user });
+            setInitialized(true);
+          }
+        }
+      })();
+    }
+  }, []);
+
+  if (!initialized) return null;
+
   return (
-    <AuthContext.Provider value={{ ...state, login, logout }}>
+    <AuthContext.Provider value={{ ...state, login, logout, initialized }}>
       {children}
     </AuthContext.Provider>
   );
