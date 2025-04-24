@@ -51,9 +51,12 @@ const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
         }}
       >
         {props.photos.map((data: any) => {
-          const matchingKey = Object.keys(reducedInfo).find((key) =>
-            new RegExp(data.name, "i").test(key + "s")
-          );
+          let matchingKey = undefined;
+          if (reducedInfo) {
+            matchingKey = Object.keys(reducedInfo).find((key) =>
+              new RegExp(data.name, "i").test(key + "s")
+            );
+          }
 
           const count = matchingKey ? reducedInfo[matchingKey].count : null;
 
