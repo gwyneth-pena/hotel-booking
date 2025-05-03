@@ -20,3 +20,7 @@ export const getTotalNights = (endDate: string, startDate: string) => {
   const diffDay = diffMil / (1000 * 60 * 60 * 24);
   return Math.floor(diffDay);
 };
+
+export const stripHtml = (htmlString: string) => {
+  return htmlString.replace(/<[^>]*>/g, "");
+};

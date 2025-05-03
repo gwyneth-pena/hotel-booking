@@ -27,9 +27,12 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-helmet-async": "^2.0.5",
+    "react-modal-hook": "^3.0.2",
+    "react-photo-album": "^3.1.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^7.3.0",
-    "swiper": "^11.2.6"
+    "swiper": "^11.2.6",
+    "yet-another-react-lightbox": "^1.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

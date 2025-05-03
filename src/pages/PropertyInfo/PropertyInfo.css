@@ -6,6 +6,20 @@
   margin-top: 50px;
 }
 
+.info-container .images {
+  height: 100%;
+}
+
+.info-table .p-inputwrapper {
+  padding: 8px !important;
+}
+
+.p-dropdown-panel.p-component.p-ripple-disabled.p-connected-overlay-enter-done
+  > div
+  > ul {
+  padding-left: 6px !important;
+}
+
 .info-table > thead {
   background-color: var(--primary-color);
   color: #fff;

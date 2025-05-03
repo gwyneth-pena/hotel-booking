@@ -6,6 +6,11 @@ import useAxios from "../../hooks/useAxios";
 import config from "../../config";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import { getTotalNights } from "../../utils/strings";
+import Footer from "../../components/Footer/Footer";
+import { useModal } from "react-modal-hook";
+import RoomInfo from "../../components/RoomInfo/RoomInfo";
+import PhotoGallery from "../../components/PhotoGallery/PhotoGallery";
+import { Dropdown } from "primereact/dropdown";
 
 const PropertyInfo = () => {
   const apiURL = config.apiUrl;
@@ -13,11 +18,52 @@ const PropertyInfo = () => {
   const [searchParams] = useSearchParams();
   const { state } = useLocation();
   const [propertyInfo, setPropertyInfo] = useState<any>(undefined);
+  const [selectedRooms, setSelectedRooms] = useState<Record<string, number>>(
+    {}
+  );
 
   const propertyInfoReq = useAxios(
     "GET",
     `${apiURL}/hotels?field=_id&values=${id}&withRoomInfo=true`
   );
+
+  const [modalRoomData, setModalRoomData] = useState(null);
+  const [modalType, setModalType] = useState("room");
+
+  const [showModal, hideModal] = useModal(() => {
+    switch (modalType) {
+      case "room":
+        return <RoomInfo hideModal={hideModal} data={modalRoomData} />;
+      // case "reserve":
+      //   return <ReservationInfo hideModal={hideModal} data={reserveData} />;
+      default:
+        return null;
+    }
+  }, [modalType, modalRoomData]);
+
+  const handleRoomClick = (room: any) => {
+    setModalType("room");
+    setModalRoomData(room);
+    showModal();
+  };
+
+  const handleReservationClick = () => {
+    console.log(selectedRooms);
+  };
+
+  const generateChoiceRooms = (rooms: any, price: number) => {
+    let choices = [{ label: "0", number: 0, price: 0 }];
+    rooms.forEach((room: any, idx: number) => {
+      const number = idx + 1;
+      const totalPrice = price * number;
+      choices.push({
+        label: `${number} (Php ${totalPrice.toLocaleString()})`,
+        number: number,
+        price: totalPrice,
+      });
+    });
+    return choices;
+  };
 
   useEffect(() => {
     const propertyInfoRes: any = propertyInfoReq.response;
@@ -28,6 +74,11 @@ const PropertyInfo = () => {
       const info = propertyInfoRes[0]?.documents?.[0];
       const totalNights = getTotalNights(checkOutDate, checkInDate);
       setPropertyInfo({ ...info, totalNights });
+      const initialSelectedRooms: any = {};
+      info.availableRooms.forEach((room: any) => {
+        initialSelectedRooms[room._id] = { label: "0", number: 0, price: 0 };
+      });
+      setSelectedRooms(initialSelectedRooms);
     }
   }, [propertyInfoReq.response]);
 
@@ -76,18 +127,17 @@ const PropertyInfo = () => {
               <div>No photos available.</div>
             </div>
           )}
-          {propertyInfo?.photos?.map((photo: any, idx: number) => {
-            return (
-              <div className="col-3">
-                <img key={idx} alt={propertyInfo?.name + "-idx"} src={photo} />
-              </div>
-            );
-          })}
+          <div className="my-2">
+            <PhotoGallery photos={propertyInfo?.photos} />
+          </div>
         </div>
         <div className="row mb-3">
-          <div className="col">
-            <p>{propertyInfo?.description || "---"}</p>
-          </div>
+          <div
+            className="col"
+            dangerouslySetInnerHTML={{
+              __html: propertyInfo?.description || "---",
+            }}
+          ></div>
         </div>
         <div className="row mb-3">
           <div className="col table-responsive">
@@ -95,25 +145,72 @@ const PropertyInfo = () => {
             <table className="info-table">
               <thead>
                 <tr>
-                  <th>Room</th>
-                  <th>Number of guests</th>
-                  <th>
+                  <th className="col-3">Room</th>
+                  <th className="col-2">Number of guests</th>
+                  <th className="col-2">
                     Price for {propertyInfo?.totalNights}{" "}
                     {propertyInfo?.totalNights > 1 ? "nights" : "night"}
                   </th>
+                  <th className="col-2">Select number of rooms</th>
+                  <th className="col-3"></th>
                 </tr>
               </thead>
               <tbody>
-                {propertyInfo?.availableRooms.map((room: any) => {
+                {propertyInfo?.availableRooms.map((room: any, idx: number) => {
                   return (
-                    <tr>
-                      <td>
-                        <p className="text-primary fw-bold">{room.name} </p>
-                        {room.description}
+                    <tr key={idx}>
+                      <td className="align-top">
+                        <a
+                          className="text-primary fw-bold cursor-pointer"
+                          onClick={() => {
+                            handleRoomClick(room);
+                          }}
+                        >
+                          {room.name}{" "}
+                        </a>
+                        <br />
+                        <div
+                          className="mt-3"
+                          dangerouslySetInnerHTML={{ __html: room.description }}
+                        ></div>
                       </td>
-                      <td>{room.maxPeople}</td>
-                      <td className="fw-bold">
-                        Php {(propertyInfo?.totalNights * parseInt(room.price)).toLocaleString()}
+                      <td className="align-top">{room.maxPeople}</td>
+                      <td className="fw-bold align-top">
+                        Php{" "}
+                        {(
+                          propertyInfo?.totalNights * parseInt(room.price)
+                        ).toLocaleString()}
+                      </td>
+                      <td className="align-top">
+                        <Dropdown
+                          value={selectedRooms[room._id]}
+                          onChange={(e) =>
+                            setSelectedRooms((prev) => ({
+                              ...prev,
+                              [room._id]: e.value,
+                            }))
+                          }
+                          options={generateChoiceRooms(
+                            room.roomNumbers,
+                            room.price
+                          )}
+                          optionLabel="label"
+                          className="w-full md:w-14rem"
+                        />
+                      </td>
+                      <td
+                        className="align-top"
+                        rowSpan={propertyInfo?.availableRooms.length}
+                      >
+                        {idx == 0 && (
+                          <button
+                            onClick={handleReservationClick}
+                            className="btn btn-dark-blue w-100"
+                            type="button"
+                          >
+                            I'll reserve
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );
@@ -123,6 +220,8 @@ const PropertyInfo = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 };

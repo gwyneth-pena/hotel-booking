@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { toTitleCase } from "../../utils/strings";
+import { stripHtml, toTitleCase } from "../../utils/strings";
 import "./ResultCard.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -59,11 +59,11 @@ const ResultCard = ({ data }: { data: any }) => {
         <div className="desc">
           {recommendedRooms?.map((room: any, idx: number) => {
             return (
-              <p key={idx}>
+              <p key={idx} className="description">
                 <span className="bg-dirty-white p-1 me-2">
                   {room.maxPeople + "x"}
                 </span>
-                {room.description}
+                {stripHtml(room.description)}
               </p>
             );
           })}
@@ -80,7 +80,7 @@ const ResultCard = ({ data }: { data: any }) => {
             "justify-content-start mt-3": !data.isList,
           })}
         >
-          <p>
+          <p className="mt-auto">
             <span className="rating-text">Very Good</span>
             <span className="text-end rating">{data.rating || 0}/5</span>
           </p>
@@ -91,12 +91,12 @@ const ResultCard = ({ data }: { data: any }) => {
             {data.targetPax}{" "}
             {parseInt(data.targetPax || "1") > 1 ? "adults" : "adult"}
           </p>
-          <p className="price">Php {(totalPrice * data.totalNights).toLocaleString()}</p>
+          <p className="price">
+            Php {(totalPrice * data.totalNights).toLocaleString()}
+          </p>
           <Link
             to={`/property/${data._id}?place=${data.place}&checkInDate=${data.checkInDate}&checkOutDate=${data.checkOutDate}&pax=${data.targetPax}`}
-            className={clsx("button", {
-              "d-none": !data.isList,
-            })}
+            className={clsx("button")}
           >
             See Availability <i className="ti ti-chevrons-right"></i>
           </Link>
