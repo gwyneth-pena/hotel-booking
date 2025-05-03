@@ -46,10 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
   const [initialized, setInitialized] = useState(false);
 
-  const login = (data: any) => {
+  const login = (data: any, redirect = true) => {
     localStorage.setItem("token", data.token);
     dispatch({ type: "LOGIN", payload: data });
-    navigate("/");
+    if (redirect) navigate("/");
   };
 
   const logout = async () => {
@@ -76,12 +76,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setInitialized(true);
     } else {
       const decoded: any = decodeToken(token);
-      login({ token });
+      login({ token }, false);
       (async () => {
         if (!state.user) {
           const user = await getUser(decoded["id"]);
           if (user) {
-            login({ token, user });
+            login({ token, user }, false);
             setInitialized(true);
           }
         }

@@ -28,7 +28,7 @@ const Login = () => {
       login({
         token,
         user: { firstName, lastName },
-      });
+      }, true);
     } catch (e) {
       setLoginMsg("Invalid login credentials.");
     }

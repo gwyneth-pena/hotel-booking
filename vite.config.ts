@@ -8,4 +8,5 @@ export default defineConfig({
   optimizeDeps: {
     include: ["lodash"],
   },
+  appType: 'spa'
 });
