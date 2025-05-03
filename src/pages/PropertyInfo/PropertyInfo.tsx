@@ -53,7 +53,7 @@ const PropertyInfo = () => {
 
   const generateChoiceRooms = (rooms: any, price: number) => {
     let choices = [{ label: "0", number: 0, price: 0 }];
-    rooms.forEach((room: any, idx: number) => {
+    rooms.forEach((_: any, idx: number) => {
       const number = idx + 1;
       const totalPrice = price * number;
       choices.push({

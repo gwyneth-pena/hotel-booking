@@ -1,7 +1,7 @@
 import "./Reservation.css";
 import { Dialog } from "primereact/dialog";
 
-const Reservation = ({ hideModal, data }: any) => {
+const Reservation = ({ hideModal }: any) => {
   <>
     <Dialog
       visible={true}
