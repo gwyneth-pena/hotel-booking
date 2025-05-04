@@ -3,7 +3,6 @@ import {
   useSearchParams,
   useLocation,
   useNavigate,
-  data,
 } from "react-router-dom";
 import "./PropertyInfo.css";
 import { Helmet } from "react-helmet-async";
