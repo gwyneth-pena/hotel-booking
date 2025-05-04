@@ -10,6 +10,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ModalProvider } from "react-modal-hook";
 import axios from "axios";
 import PublicRoute from "./utils/PublicRoute";
+import Reservation from "./pages/Reservation/Reservation";
 
 axios.defaults.withCredentials = true;
 
@@ -33,6 +34,7 @@ function App() {
                 />
                 <Route path="/searchresults" element={<SearchResults />} />
                 <Route path="/property/:id" element={<PropertyInfo />} />
+                <Route path="/reservation" element={<Reservation />} />
               </Routes>
             </ModalProvider>
           </AuthProvider>

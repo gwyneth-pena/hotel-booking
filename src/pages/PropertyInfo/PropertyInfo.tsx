@@ -1,10 +1,17 @@
-import { useParams, useSearchParams, useLocation } from "react-router-dom";
+import {
+  useParams,
+  useSearchParams,
+  useLocation,
+  useNavigate,
+  data,
+} from "react-router-dom";
 import "./PropertyInfo.css";
 import { Helmet } from "react-helmet-async";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import config from "../../config";
 import SearchBox from "../../components/SearchBox/SearchBox";
+import { Toast } from "primereact/toast";
 import { getTotalNights } from "../../utils/strings";
 import Footer from "../../components/Footer/Footer";
 import { useModal } from "react-modal-hook";
@@ -14,10 +21,16 @@ import { Dropdown } from "primereact/dropdown";
 
 const PropertyInfo = () => {
   const apiURL = config.apiUrl;
+  const toast: any = useRef(null);
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const { state } = useLocation();
+  const navigate = useNavigate();
   const [propertyInfo, setPropertyInfo] = useState<any>(undefined);
+  const [totelReservedRoomsInfo, setTotalReservedRoomsInfo] = useState({
+    totalPrice: 0,
+    totalRooms: 0,
+  });
   const [selectedRooms, setSelectedRooms] = useState<Record<string, number>>(
     {}
   );
@@ -27,15 +40,23 @@ const PropertyInfo = () => {
     `${apiURL}/hotels?field=_id&values=${id}&withRoomInfo=true`
   );
 
-  const [modalRoomData, setModalRoomData] = useState(null);
+  const [modalRoomData, setModalRoomData] = useState<any>({});
   const [modalType, setModalType] = useState("room");
 
   const [showModal, hideModal] = useModal(() => {
     switch (modalType) {
       case "room":
-        return <RoomInfo hideModal={hideModal} data={modalRoomData} />;
-      // case "reserve":
-      //   return <ReservationInfo hideModal={hideModal} data={reserveData} />;
+        return (
+          <RoomInfo
+            hideModal={hideModal}
+            data={{
+              ...modalRoomData,
+              propertyInfo,
+              checkInDate: searchParams.get("checkInDate"),
+              checkOutDate: searchParams.get("checkOutDate"),
+            }}
+          />
+        );
       default:
         return null;
     }
@@ -47,16 +68,55 @@ const PropertyInfo = () => {
     showModal();
   };
 
-  const handleReservationClick = () => {
-    console.log(selectedRooms);
+  const handleNumOfRoomsChange = (room: any, e: any) => {
+    const updatedSelectedRooms = {
+      ...selectedRooms,
+      [room._id]: e.value,
+    };
+
+    setSelectedRooms(updatedSelectedRooms);
+
+    const total = getTotalReservedRooms(updatedSelectedRooms);
+    setTotalReservedRoomsInfo(total);
   };
 
-  const generateChoiceRooms = (rooms: any, price: number) => {
-    let choices = [{ label: "0", number: 0, price: 0 }];
+  const handleReservationClick = () => {
+    if (totelReservedRoomsInfo.totalPrice == 0) {
+      toast.current.show({
+        severity: "error",
+        detail: "Please select number of rooms to be reserved.",
+        life: 3000,
+      });
+    } else {
+      navigate("/reservation", {
+        state: {
+          selectedRooms,
+          propertyInfo: propertyInfo,
+          checkInDate: searchParams.get("checkInDate"),
+          checkOutDate: searchParams.get("checkOutDate"),
+        },
+      });
+    }
+  };
+
+  const getTotalReservedRooms = (rooms: any) => {
+    let totalRooms = 0;
+    let totalPrice = 0;
+    rooms = Object.keys(rooms).map((key: any) => rooms[key]);
+    rooms?.forEach((room: any) => {
+      totalRooms += room.number;
+      totalPrice += room.price;
+    });
+    return { totalRooms, totalPrice };
+  };
+
+  const generateChoiceRooms = (name: any, rooms: any, price: number) => {
+    let choices = [{ name: name, label: "0", number: 0, price: 0 }];
     rooms.forEach((_: any, idx: number) => {
       const number = idx + 1;
       const totalPrice = price * number;
       choices.push({
+        name: name,
         label: `${number} (Php ${totalPrice.toLocaleString()})`,
         number: number,
         price: totalPrice,
@@ -76,7 +136,12 @@ const PropertyInfo = () => {
       setPropertyInfo({ ...info, totalNights });
       const initialSelectedRooms: any = {};
       info.availableRooms.forEach((room: any) => {
-        initialSelectedRooms[room._id] = { label: "0", number: 0, price: 0 };
+        initialSelectedRooms[room._id] = {
+          name: room.name,
+          label: "0",
+          number: 0,
+          price: 0,
+        };
       });
       setSelectedRooms(initialSelectedRooms);
     }
@@ -93,7 +158,7 @@ const PropertyInfo = () => {
           content={`Book your stay in ${propertyInfo?.name || "---"}`}
         />
       </Helmet>
-
+      <Toast className="p-4" ref={toast} />
       <div className="box-header bg-primary">
         <div className="container">
           <div className="row">
@@ -184,13 +249,11 @@ const PropertyInfo = () => {
                       <td className="align-top">
                         <Dropdown
                           value={selectedRooms[room._id]}
-                          onChange={(e) =>
-                            setSelectedRooms((prev) => ({
-                              ...prev,
-                              [room._id]: e.value,
-                            }))
-                          }
+                          onChange={(e: any) => {
+                            handleNumOfRoomsChange(room, e);
+                          }}
                           options={generateChoiceRooms(
+                            room.name,
                             room.roomNumbers,
                             room.price
                           )}
@@ -202,6 +265,21 @@ const PropertyInfo = () => {
                         className="align-top"
                         rowSpan={propertyInfo?.availableRooms.length}
                       >
+                        {totelReservedRoomsInfo.totalPrice > 0 && (
+                          <>
+                            <p>
+                              {totelReservedRoomsInfo.totalRooms}{" "}
+                              {totelReservedRoomsInfo.totalRooms == 1
+                                ? "room"
+                                : "rooms"}{" "}
+                              for{" "}
+                            </p>
+                            <h5 className="mb-5 fw-bold">
+                              Php{" "}
+                              {totelReservedRoomsInfo.totalPrice.toLocaleString()}
+                            </h5>
+                          </>
+                        )}
                         {idx == 0 && (
                           <button
                             onClick={handleReservationClick}

@@ -105,7 +105,8 @@ const SearchResults = () => {
               <div className="col-12 col-md-9 d-flex justify-content-start ms-md-0 ps-md-0">
                 <h5 className="fw-bold">
                   {toTitleCase(searchParams.get("place") || "")}:{" "}
-                  {results.length} properties found
+                  {results.length}{" "}
+                  {results.length > 1 ? "properties" : "property"} found
                 </h5>
               </div>
               <div className="d-none d-md-flex col-md-3 justify-content-end">

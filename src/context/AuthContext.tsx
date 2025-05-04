@@ -52,11 +52,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (redirect) navigate("/");
   };
 
-  const logout = async () => {
+  const logout = async (redirect = false) => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
     const loggedOutRes = await axios.post(`${apiURL}/auth/logout`);
-    if (loggedOutRes.status === 200) navigate("/");
+    if (loggedOutRes.status === 200 && redirect) navigate("/");
   };
 
   const getUser = async (id: string) => {
