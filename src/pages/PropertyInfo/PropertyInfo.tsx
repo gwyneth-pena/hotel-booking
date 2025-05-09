@@ -26,7 +26,7 @@ const PropertyInfo = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [propertyInfo, setPropertyInfo] = useState<any>(undefined);
-  const [totelReservedRoomsInfo, setTotalReservedRoomsInfo] = useState({
+  const [totalReservedRoomsInfo, setTotalReservedRoomsInfo] = useState({
     totalPrice: 0,
     totalRooms: 0,
   });
@@ -80,7 +80,7 @@ const PropertyInfo = () => {
   };
 
   const handleReservationClick = () => {
-    if (totelReservedRoomsInfo.totalPrice == 0) {
+    if (totalReservedRoomsInfo.totalPrice == 0) {
       toast.current.show({
         severity: "error",
         detail: "Please select number of rooms to be reserved.",
@@ -264,18 +264,18 @@ const PropertyInfo = () => {
                         className="align-top"
                         rowSpan={propertyInfo?.availableRooms.length}
                       >
-                        {totelReservedRoomsInfo.totalPrice > 0 && (
+                        {totalReservedRoomsInfo.totalPrice > 0 && (
                           <>
                             <p>
-                              {totelReservedRoomsInfo.totalRooms}{" "}
-                              {totelReservedRoomsInfo.totalRooms == 1
+                              {totalReservedRoomsInfo.totalRooms}{" "}
+                              {totalReservedRoomsInfo.totalRooms == 1
                                 ? "room"
                                 : "rooms"}{" "}
                               for{" "}
                             </p>
                             <h5 className="mb-5 fw-bold">
                               Php{" "}
-                              {totelReservedRoomsInfo.totalPrice.toLocaleString()}
+                              {totalReservedRoomsInfo.totalPrice.toLocaleString()}
                             </h5>
                           </>
                         )}

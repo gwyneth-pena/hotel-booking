@@ -12,3 +12,16 @@ export const formatDate = (date: Date) => {
   const day = String(date?.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
+
+export const toLongDateString = (dateString: string) => {
+  if(!dateString) return '';
+  const date = new Date(dateString);
+  return date
+    .toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })
+    .replace(",", "");
+};

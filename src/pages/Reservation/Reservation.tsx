@@ -3,6 +3,7 @@ import "./Reservation.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import PhotoGallery from "../../components/PhotoGallery/PhotoGallery";
 import { getTotalNights } from "../../utils/strings";
+import { toLongDateString } from "../../utils/dates";
 
 const Reservation = () => {
   const { state } = useLocation();
@@ -51,13 +52,13 @@ const Reservation = () => {
                   <p className="fw-bold">Check-in</p>
                 </div>
                 <div className="col-6">
-                  <p>{state?.checkInDate}</p>
+                  <p>{toLongDateString(state?.checkInDate)}</p>
                 </div>
                 <div className="col-6">
                   <p className="fw-bold">Check-out</p>
                 </div>
                 <div className="col-6">
-                  <p>{state?.checkOutDate}</p>
+                  <p>{toLongDateString(state?.checkOutDate)}</p>
                 </div>
                 <div className="col-6">
                   <p className="fw-bold">Total length of stay</p>
@@ -111,6 +112,8 @@ const Reservation = () => {
             <div className="card-body">
               <div className="row px-3">
                 <ul>
+                  <li>You'll pay securely today</li>
+                  <li>Login to your account before you can book this reservation</li>
                   <li>
                     Changes to your personal or booking details won't be
                     possible after your booking is complete
