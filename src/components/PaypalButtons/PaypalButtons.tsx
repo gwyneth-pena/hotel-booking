@@ -70,7 +70,7 @@ const PaypalButtons = ({ data }: { data: any }) => {
         .render("#paypal-button-container");
       setPaypalButtonRendered(true);
     }
-  }, [data, paypalButtonRendered]);
+  }, [data]);
   return (
     <>
       <div id="paypal-button-container" className="mt-4"></div>
