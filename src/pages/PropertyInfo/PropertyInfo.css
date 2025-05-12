@@ -34,11 +34,16 @@
   border: 1px solid rgb(137, 193, 227);
 }
 
+.p-toast{
+  z-index: -10000;
+}
+
 .p-toast .p-toast-message {
   padding: 0.75rem !important;
 }
 
 .p-toast-message-content {
+  z-index: 20000 !important;
   padding: 0.5rem !important;
 }
 
