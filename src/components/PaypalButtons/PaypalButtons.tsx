@@ -18,27 +18,19 @@ const PaypalButtons = ({ data }: { data: any }) => {
   const clientId = config.paypalClientId;
 
   useEffect(() => {
-    if (window.paypal) {
+    if (!window.paypal) {
+      loadPaypalScript();
+    } else {
       setPaypalLoaded(true);
-      return;
     }
-
-    const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&components=buttons`;
-    script.async = true;
-    script.onload = () => setPaypalLoaded(true);
-    script.onerror = () => console.error("Failed to load PayPal SDK");
-
-    document.body.appendChild(script);
   }, []);
 
   useEffect(() => {
     if (
       window.paypal &&
+      isAuthenticated &&
       paypalLoaded &&
-      !paypalButtonRendered &&
-      data.totalPrice > 0 &&
-      isAuthenticated
+      !paypalButtonRendered
     ) {
       window.paypal
         .Buttons({
@@ -70,7 +62,18 @@ const PaypalButtons = ({ data }: { data: any }) => {
         .render("#paypal-button-container");
       setPaypalButtonRendered(true);
     }
-  }, [data]);
+  }, [paypalLoaded, paypalButtonRendered, isAuthenticated]);
+
+  const loadPaypalScript = () => {
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&components=buttons`;
+    script.async = true;
+    script.onload = () => setPaypalLoaded(true);
+    script.onerror = () => console.error("Failed to load PayPal SDK");
+
+    document.body.appendChild(script);
+  };
+
   return (
     <>
       <div id="paypal-button-container" className="mt-4"></div>
