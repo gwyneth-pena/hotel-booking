@@ -15,7 +15,7 @@ const ResultCard = ({ data }: { data: any }) => {
     let totalPrice = 0;
     for (const room of data.availableRooms) {
       if (totalPaxInRecoRooms >= pax) break;
-      totalPaxInRecoRooms += room.pax;
+      totalPaxInRecoRooms += room.maxPeople;
       totalPrice += room.price;
       recommendedRooms.push(room);
     }

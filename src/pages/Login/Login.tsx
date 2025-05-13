@@ -24,10 +24,10 @@ const Login = () => {
         password,
       });
       setLoginMsg(response.data.message);
-      const { token, firstName, lastName } = response.data.data;
+      const { token, firstName, lastName ,id} = response.data.data;
       login({
         token,
-        user: { firstName, lastName },
+        user: { firstName, lastName, id },
       }, true);
     } catch (e) {
       setLoginMsg("Invalid login credentials.");

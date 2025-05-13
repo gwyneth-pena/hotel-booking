@@ -112,19 +112,19 @@ const Reservation = () => {
                                 ]?.price?.toLocaleString()}
                               </p>
                             </div>
-                            <div className="col-6">
-                              <h5 className="fw-bold">Total</h5>
-                            </div>
-                            <div className="col-6">
-                              <h5 className="fw-bold">
-                                Php {totalPrice.toLocaleString()}
-                              </h5>
-                            </div>
                           </div>
                         </div>
                       );
                     }
                   )}
+                  <div className="col-6">
+                    <h5 className="fw-bold">Total</h5>
+                  </div>
+                  <div className="col-6">
+                    <h5 className="fw-bold">
+                      Php {totalPrice.toLocaleString()}
+                    </h5>
+                  </div>
                 </div>
               </div>
             </div>
@@ -157,10 +157,12 @@ const Reservation = () => {
                 Confirm Reservation
               </button>
             )}
-            <PaypalButtons data={{
-              totalPrice: totalPrice,
-              state: state
-            }}/>
+            <PaypalButtons
+              data={{
+                totalPrice: totalPrice,
+                state: state,
+              }}
+            />
           </div>
         </div>
       </div>

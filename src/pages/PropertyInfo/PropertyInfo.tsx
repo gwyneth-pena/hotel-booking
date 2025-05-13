@@ -30,9 +30,7 @@ const PropertyInfo = () => {
     totalPrice: 0,
     totalRooms: 0,
   });
-  const [selectedRooms, setSelectedRooms] = useState<Record<string, number>>(
-    {}
-  );
+  const [selectedRooms, setSelectedRooms] = useState<Record<string, any>>({});
 
   const propertyInfoReq = useAxios(
     "GET",
@@ -87,9 +85,15 @@ const PropertyInfo = () => {
         life: 3000,
       });
     } else {
+      const finalSelectedRooms = { ...selectedRooms };
+      Object.keys(finalSelectedRooms).forEach((key: any) => {
+        if (finalSelectedRooms[key]?.number === 0) {
+          delete finalSelectedRooms[key];
+        }
+      });
       navigate("/reservation", {
         state: {
-          selectedRooms,
+          selectedRooms: finalSelectedRooms,
           propertyInfo: propertyInfo,
           checkInDate: searchParams.get("checkInDate"),
           checkOutDate: searchParams.get("checkOutDate"),
@@ -260,35 +264,37 @@ const PropertyInfo = () => {
                           className="w-full md:w-14rem"
                         />
                       </td>
-                      <td
-                        className="align-top"
-                        rowSpan={propertyInfo?.availableRooms.length}
-                      >
-                        {totalReservedRoomsInfo.totalPrice > 0 && (
-                          <>
-                            <p>
-                              {totalReservedRoomsInfo.totalRooms}{" "}
-                              {totalReservedRoomsInfo.totalRooms == 1
-                                ? "room"
-                                : "rooms"}{" "}
-                              for{" "}
-                            </p>
-                            <h5 className="mb-5 fw-bold">
-                              Php{" "}
-                              {totalReservedRoomsInfo.totalPrice.toLocaleString()}
-                            </h5>
-                          </>
-                        )}
-                        {idx == 0 && (
-                          <button
-                            onClick={handleReservationClick}
-                            className="btn btn-dark-blue w-100"
-                            type="button"
-                          >
-                            I'll reserve
-                          </button>
-                        )}
-                      </td>
+                      {idx == 0 && (
+                        <td
+                          className="align-top"
+                          rowSpan={propertyInfo?.availableRooms.length}
+                        >
+                          {totalReservedRoomsInfo.totalPrice > 0 && (
+                            <>
+                              <p>
+                                {totalReservedRoomsInfo.totalRooms}{" "}
+                                {totalReservedRoomsInfo.totalRooms == 1
+                                  ? "room"
+                                  : "rooms"}{" "}
+                                for{" "}
+                              </p>
+                              <h5 className="mb-5 fw-bold">
+                                Php{" "}
+                                {totalReservedRoomsInfo.totalPrice.toLocaleString()}
+                              </h5>
+                            </>
+                          )}
+                          {idx == 0 && (
+                            <button
+                              onClick={handleReservationClick}
+                              className="btn btn-dark-blue w-100"
+                              type="button"
+                            >
+                              I'll reserve
+                            </button>
+                          )}
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
