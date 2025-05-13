@@ -36,26 +36,9 @@ const PaypalButtons = ({ data }: { data: any }) => {
     ) {
       window.paypal
         .Buttons({
-          createOrder: (_: any, actions: any) => {
-            return createOrder(actions);
-          },
-          onApprove: async (_: any, actions: any) => {
-            const rooms = await getAllAvailableRooms();
-            const requests = prepareBookedRoomsRequests(rooms);
-            actions.order
-              .capture()
-              .then(() => {
-                saveBooking(requests);
-              })
-              .catch((err: any) => {
-                console.error("PayPal Checkout Error:", err);
-                showErrorMessage();
-              });
-          },
-          onError: (err: any) => {
-            console.error("PayPal Checkout Error:", err);
-            showErrorMessage();
-          },
+          createOrder,
+          onApprove: onPaypalApprove,
+          onError: onPaypalError,
         })
         .render("#paypal-button-container");
       setPaypalButtonRendered(true);
@@ -70,6 +53,35 @@ const PaypalButtons = ({ data }: { data: any }) => {
     script.onerror = () => console.error("Failed to load PayPal SDK");
 
     document.body.appendChild(script);
+  };
+
+  const createOrder = (_: any, actions: any) => {
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "PHP",
+            value: data.totalPrice.toString(),
+          },
+        },
+      ],
+    });
+  };
+
+  const onPaypalApprove = async (_: any, actions: any) => {
+    const rooms = await getAllAvailableRooms();
+    const requests = prepareBookedRoomsRequests(rooms);
+    actions.order
+      .capture()
+      .then(() => {
+        saveBooking(requests);
+      })
+      .catch(onPaypalError);
+  };
+
+  const onPaypalError = (err: any) => {
+    console.error("PayPal Checkout Error:", err);
+    showErrorMessage();
   };
 
   const prepareBookedRoomsRequests = (availableRooms: any) => {
@@ -110,25 +122,28 @@ const PaypalButtons = ({ data }: { data: any }) => {
     return requests;
   };
 
-  const createOrder = (actions: any) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "PHP",
-            value: data.totalPrice.toString(),
-          },
-        },
-      ],
-    });
-  };
-
   const showErrorMessage = () => {
     toast.current.show({
       severity: "error",
       detail: "Something wrong please try again later",
       life: 3000,
     });
+  };
+
+  const saveBooking = async (request: any) => {
+    try {
+      const response = await axios.post(`${apiURL}/booking`, request);
+      if (response.status === 200) {
+        toast.current.show({
+          severity: "success",
+          detail: "Booking confirmed.",
+          life: 5000,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      showErrorMessage();
+    }
   };
 
   const getAllAvailableRooms = async () => {
@@ -175,22 +190,6 @@ const PaypalButtons = ({ data }: { data: any }) => {
       });
       resolve(response.data);
     });
-  };
-
-  const saveBooking = async (request: any) => {
-    try {
-      const response = await axios.post(`${apiURL}/booking`, request);
-      if (response.status === 200) {
-        toast.current.show({
-          severity: "success",
-          detail: "Booking confirmed.",
-          life: 5000,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      showErrorMessage();
-    }
   };
 
   return (
