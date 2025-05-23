@@ -9,6 +9,7 @@ import config from "../../config";
 import { useAuth } from "../../context/AuthContext";
 import BookingInfo from "../../components/BookingInfo/BookingInfo";
 import { useModal } from "react-modal-hook";
+import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
 
 const Bookings = () => {
   const apiUrl = config.apiUrl;
@@ -18,6 +19,7 @@ const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [modalInfoData, setModalInfoData] = useState<any>(null);
   const [view, setView] = useState<any>(Views.MONTH);
+  const [loading, setLoading] = useState(false);
 
   const [showModal, hideModal] = useModal(() => {
     return <BookingInfo hideModal={hideModal} data={modalInfoData} />;
@@ -32,6 +34,7 @@ const Bookings = () => {
     const [monthStart, monthEnd] = getStartAndEndMonth(date);
 
     try {
+      setLoading(true);
       const bookingsResponse = await axios(`${apiUrl}/booking/my-data`, {
         params: {
           userId: user.id,
@@ -54,6 +57,8 @@ const Bookings = () => {
       setBookingsMapped(bookingsMapped);
     } catch (e) {
       console.error(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,6 +104,7 @@ const Bookings = () => {
           />
         </div>
       </div>
+      {loading && <LoadingOverlay />}
     </div>
   );
 };
