@@ -17,8 +17,8 @@ const Reservation = () => {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    if (!state) {
-      navigate("/");
+    if (!state || !state.selectedRooms) {
+      navigate("/", { replace: true });
     } else {
       const totalNights =
         getTotalNights(state?.checkOutDate, state?.checkInDate) || 0;
@@ -95,37 +95,48 @@ const Reservation = () => {
                 <p className="fw-bold">Your Price Summary</p>
               </div>
               <div className="card-body">
-                <div className="row">
-                  {Object.keys(state?.selectedRooms).map(
-                    (room: any, idx: number) => {
-                      return (
-                        <div className="col-12" key={idx}>
-                          <div className="row">
-                            <div className="col-6">
-                              <p>{state?.selectedRooms[room]?.name}</p>
-                            </div>
-                            <div className="col-6">
-                              <p>
-                                Php{" "}
-                                {state?.selectedRooms[
-                                  room
-                                ]?.price?.toLocaleString()}
-                              </p>
+                {state?.selectedRooms && (
+                  <div className="row">
+                    {Object.keys(state?.selectedRooms).map(
+                      (room: any, idx: number) => {
+                        return (
+                          <div className="col-12" key={idx}>
+                            <div className="row">
+                              <div className="col-6">
+                                <p>{state?.selectedRooms[room]?.name}</p>
+                              </div>
+                              <div className="col-3">
+                                <p>
+                                  ({state?.selectedRooms[room]?.number}{" "}
+                                  {state?.selectedRooms[room]?.number > 1
+                                    ? "rooms"
+                                    : "room"}
+                                  )
+                                </p>
+                              </div>
+                              <div className="col-3">
+                                <p>
+                                  Php{" "}
+                                  {state?.selectedRooms[
+                                    room
+                                  ]?.price?.toLocaleString()}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    }
-                  )}
-                  <div className="col-6">
-                    <h5 className="fw-bold">Total</h5>
+                        );
+                      }
+                    )}
+                    <div className="col-6">
+                      <h5 className="fw-bold">Total</h5>
+                    </div>
+                    <div className="col-6">
+                      <h5 className="fw-bold text-end">
+                        Php {totalPrice.toLocaleString()}
+                      </h5>
+                    </div>
                   </div>
-                  <div className="col-6">
-                    <h5 className="fw-bold">
-                      Php {totalPrice.toLocaleString()}
-                    </h5>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
             <div className="card mt-3 mt-md-4">

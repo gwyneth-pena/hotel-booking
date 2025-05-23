@@ -46,10 +46,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
   const [initialized, setInitialized] = useState(false);
 
-  const login = (data: any, redirect = true) => {
+  const login = async (data: { token: string }, redirect = true) => {
     localStorage.setItem("token", data.token);
-    dispatch({ type: "LOGIN", payload: data });
-    if (redirect) navigate("/");
+    const decoded: any = decodeToken(data.token);
+    try {
+      const user = await getUser(decoded["id"]);
+      if (user) {
+        dispatch({ type: "LOGIN", payload: { token: data.token, user } });
+        if (redirect) navigate("/");
+      } else {
+        logout();
+      }
+    } catch (error) {
+      logout();
+    }
   };
 
   const logout = async (redirect = false) => {
@@ -69,24 +79,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    const token = window?.localStorage?.getItem("token") || "";
-    const isValidToken = isTokenValid(token);
-    if (!isValidToken) {
-      logout();
-      setInitialized(true);
-    } else {
+    const initAuth = async () => {
+      const token = window?.localStorage?.getItem("token") || "";
+      const isValidToken = isTokenValid(token);
+
+      if (!isValidToken) {
+        logout();
+        setInitialized(true);
+        return;
+      }
+
       const decoded: any = decodeToken(token);
-      login({ token }, false);
-      (async () => {
-        if (!state.user) {
-          const user = await getUser(decoded["id"]);
-          if (user) {
-            login({ token, user }, false);
-            setInitialized(true);
-          }
+      try {
+        const user = await getUser(decoded["id"]);
+        if (user) {
+          localStorage.setItem("token", token);
+          dispatch({ type: "LOGIN", payload: { token, user } });
+        } else {
+          logout();
         }
-      })();
-    }
+      } catch (error) {
+        logout();
+      } finally {
+        setInitialized(true);
+      }
+    };
+
+    initAuth();
   }, []);
 
   if (!initialized) return null;

@@ -21,11 +21,11 @@ const ResultCard = ({ data }: { data: any }) => {
     }
     setTotalPrice(totalPrice);
     setRecommendedRooms(recommendedRooms);
-  }, []);
+  }, [data]);
 
   return (
     <div
-      className={clsx("row result-card", {
+      className={clsx("row result-card my-2", {
         "d-flex": !data.isList,
         "flex-column": !data.isList,
       })}
@@ -44,7 +44,7 @@ const ResultCard = ({ data }: { data: any }) => {
         />
       </div>
       <div
-        className={clsx("col-6 body", {
+        className={clsx("col-5 body", {
           "col-12": !data.isList,
         })}
       >
@@ -70,8 +70,9 @@ const ResultCard = ({ data }: { data: any }) => {
         </div>
       </div>
       <div
-        className={clsx("col-2", {
+        className={clsx("col-3", {
           "col-12 d-flex justify-content-between": !data.isList,
+          "d-flex flex-column justify-content-between pb-2": data.isList,
         })}
       >
         <div
@@ -85,7 +86,7 @@ const ResultCard = ({ data }: { data: any }) => {
             <span className="text-end rating">{data.rating || 0}/5</span>
           </p>
         </div>
-        <div>
+        <div className="d-flex flex-column align-items-end">
           <p className="purchase">
             {data.totalNights} {data.totalNights > 1 ? "nights" : "night"},{" "}
             {data.targetPax}{" "}

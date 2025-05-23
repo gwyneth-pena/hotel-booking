@@ -32,12 +32,14 @@ const SearchResults = () => {
   const fetchHotels = async () => {
     const checkInDate = searchParams.get("checkInDate") || "";
     const checkOutDate = searchParams.get("checkOutDate") || "";
+    const pax = searchParams.get("pax");
+    const place = searchParams.get("place");
 
     const res = await fetchHotelsSearchResult({
-      city: searchParams.get("place") || state?.place,
+      city: place || state?.place,
       checkInDate: checkInDate,
       checkOutDate: checkOutDate,
-      minPax: searchParams.get("pax"),
+      minPax: pax,
     });
     const data =
       res?.[0]?.documents?.map((item: any) => {
@@ -46,6 +48,7 @@ const SearchResults = () => {
           totalNights: getTotalNights(checkOutDate, checkInDate),
         };
       }) || [];
+
     setInitResults(data);
     setResults(data);
   };
@@ -162,15 +165,17 @@ const SearchResults = () => {
                 <div className="row">
                   <div className="col-12">
                     <div className="row">
-                      <div
-                        className={clsx({
-                          "col-12": isList || (!isList && screenWidth < 621),
-                          "col-4": !isList,
-                          "px-4": !isList && screenWidth < 621,
-                        })}
-                      >
-                        {results.map((data: any, idx: number) => {
-                          return (
+                      {results.map((data: any, idx: number) => {
+                        return (
+                          <div
+                            key={idx}
+                            className={clsx({
+                              "col-12":
+                                isList || (!isList && screenWidth < 621),
+                              "col-4": !isList,
+                              "px-4": !isList && screenWidth < 621,
+                            })}
+                          >
                             <ResultCard
                               key={idx}
                               data={{
@@ -182,9 +187,9 @@ const SearchResults = () => {
                                 checkOutDate: searchParams.get("checkOutDate"),
                               }}
                             />
-                          );
-                        })}
-                      </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

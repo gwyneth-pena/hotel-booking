@@ -68,3 +68,8 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+a{
+  color: var(--primary-color);
+  text-decoration: none;
+}

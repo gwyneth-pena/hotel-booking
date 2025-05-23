@@ -4,6 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import { Toast } from "primereact/toast";
 import config from "../../config";
 import axios from "axios";
+import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
+import { useNavigate } from "react-router-dom";
 
 declare global {
   interface Window {
@@ -14,10 +16,12 @@ declare global {
 const PaypalButtons = ({ data }: { data: any }) => {
   const [paypalButtonRendered, setPaypalButtonRendered] = useState(false);
   const [paypalLoaded, setPaypalLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { isAuthenticated, user } = useAuth();
   const toast: any = useRef(null);
   const clientId = config.paypalClientId;
   const apiURL = config.apiUrl;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!window.paypal) {
@@ -108,13 +112,14 @@ const PaypalButtons = ({ data }: { data: any }) => {
 
     const requests = {
       user: user.id,
+      status: "CONFIRMED",
       rooms: [
         {
           hotel: hotelId,
           rooms: roomsRequest,
           checkInDate: checkIn,
           checkOutDate: checkOut,
-          totalPriice: data.totalPrice,
+          totalPrice: data.totalPrice,
         },
       ],
     };
@@ -131,6 +136,7 @@ const PaypalButtons = ({ data }: { data: any }) => {
   };
 
   const saveBooking = async (request: any) => {
+    setLoading(true);
     try {
       const response = await axios.post(`${apiURL}/booking`, request);
       if (response.status === 200) {
@@ -139,20 +145,30 @@ const PaypalButtons = ({ data }: { data: any }) => {
           detail: "Booking confirmed.",
           life: 5000,
         });
+        window.history.replaceState(null, "", window.location.pathname);
+        navigateToBookings();
       }
     } catch (error) {
       console.error(error);
       showErrorMessage();
+    } finally {
+      setLoading(false);
     }
   };
 
+  const navigateToBookings = () => {
+    setTimeout(() => {
+      navigate("/bookings");
+    }, 3000);
+  };
+
   const getAllAvailableRooms = async () => {
+    setLoading(true);
     try {
       const selectedRooms = data.state.selectedRooms || [];
       const checkIn = data.state.checkInDate;
       const checkOut = data.state.checkOutDate;
       const requests: any = [];
-
       Object.keys(selectedRooms).map((key: string) => {
         requests.push(getAvailableRooms(key, checkIn, checkOut));
       });
@@ -173,6 +189,8 @@ const PaypalButtons = ({ data }: { data: any }) => {
       });
     } catch (e) {
       showErrorMessage();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -196,6 +214,7 @@ const PaypalButtons = ({ data }: { data: any }) => {
     <>
       <div id="paypal-button-container" className="mt-4"></div>
       <Toast className="p-4" ref={toast} />
+      {loading && <LoadingOverlay />}
     </>
   );
 };

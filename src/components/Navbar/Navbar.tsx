@@ -58,7 +58,14 @@ const Navbar = () => {
                     {user?.firstName}
                   </p>
                   <OverlayPanel ref={avatarMenuRef}>
-                    <div className="py-2 px-4">
+                    <div className="pt-2 px-4">
+                      <Link to={"/bookings"}>
+                        {" "}
+                        <i className="ti ti-map-2 me-2" />
+                        Bookings
+                      </Link>
+                    </div>
+                    <div className="pb-2 px-4">
                       <p className="my-1 p-0 cursor-pointer" onClick={logout}>
                         <i className="ti ti-logout me-2" /> Logout
                       </p>
@@ -105,10 +112,12 @@ const Navbar = () => {
           </button>
         </div>
         <div className="offcanvas-body">
-          <p className="text-primary fw-bold mx-0 px-0 no-outline border-0">
-            <i className="ti ti-user me-4"></i>
-            {user?.firstName}
-          </p>
+          {isAuthenticated && (
+            <p className="text-primary fw-bold mx-0 px-0 no-outline border-0">
+              <i className="ti ti-user me-4"></i>
+              {user?.firstName}
+            </p>
+          )}
           {!isAuthenticated ? (
             <>
               {" "}
@@ -149,6 +158,11 @@ const Navbar = () => {
           ) : (
             <>
               <div className="row">
+                <Link to={"/bookings"}>
+                  {" "}
+                  <i className="ti ti-map-2 me-4" />
+                  Bookings
+                </Link>
                 <Link
                   to=""
                   onClick={() => {

@@ -11,6 +11,8 @@ import { ModalProvider } from "react-modal-hook";
 import axios from "axios";
 import PublicRoute from "./utils/PublicRoute";
 import Reservation from "./pages/Reservation/Reservation";
+import Bookings from "./pages/Bookings/Bookings";
+import PrivateRoute from "./utils/PrivateRoute";
 
 axios.defaults.withCredentials = true;
 
@@ -35,6 +37,14 @@ function App() {
                 <Route path="/searchresults" element={<SearchResults />} />
                 <Route path="/property/:id" element={<PropertyInfo />} />
                 <Route path="/reservation" element={<Reservation />} />
+                <Route
+                  path="/bookings"
+                  element={
+                    <PrivateRoute>
+                      <Bookings />
+                    </PrivateRoute>
+                  }
+                />
               </Routes>
             </ModalProvider>
           </AuthProvider>

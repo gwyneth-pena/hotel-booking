@@ -31,10 +31,12 @@ const PropertyInfo = () => {
     totalRooms: 0,
   });
   const [selectedRooms, setSelectedRooms] = useState<Record<string, any>>({});
+  const checkInDate = searchParams.get("checkInDate");
+  const checkOutDate = searchParams.get("checkOutDate");
 
   const propertyInfoReq = useAxios(
     "GET",
-    `${apiURL}/hotels?field=_id&values=${id}&withRoomInfo=true`
+    `${apiURL}/hotels?field=_id&values=${id}&withRoomInfo=true&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
   );
 
   const [modalRoomData, setModalRoomData] = useState<any>({});
