@@ -13,6 +13,8 @@ import PublicRoute from "./utils/PublicRoute";
 import Reservation from "./pages/Reservation/Reservation";
 import Bookings from "./pages/Bookings/Bookings";
 import PrivateRoute from "./utils/PrivateRoute";
+import NotFound from "./pages/NotFound/NotFound";
+import SignUp from "./pages/SignUp/SignUp";
 
 axios.defaults.withCredentials = true;
 
@@ -34,6 +36,14 @@ function App() {
                     </PublicRoute>
                   }
                 />
+                <Route
+                  path="/register"
+                  element={
+                    <PublicRoute>
+                      <SignUp />
+                    </PublicRoute>
+                  }
+                />
                 <Route path="/searchresults" element={<SearchResults />} />
                 <Route path="/property/:id" element={<PropertyInfo />} />
                 <Route path="/reservation" element={<Reservation />} />
@@ -44,7 +54,8 @@ function App() {
                       <Bookings />
                     </PrivateRoute>
                   }
-                />
+                />{" "}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </ModalProvider>
           </AuthProvider>

@@ -38,9 +38,9 @@ const Navbar = () => {
           {!isAuthenticated ? (
             <div className="collapse navbar-collapse d-sm-none">
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <button type="button" className="btn me-3">
+                <Link to="/register" className="btn me-2">
                   Register
-                </button>
+                </Link>
                 <Link to="/login" className="btn">
                   Sign in
                 </Link>
@@ -129,12 +129,12 @@ const Navbar = () => {
                   }}
                   className="col-12"
                 >
-                  <i className="ti ti-home me-4"></i>Main Page
+                  <i className="ti ti-home me-4"></i>Home Page
                 </Link>
               </div>
               <div className="row">
                 <Link
-                  to=""
+                  to="/register"
                   onClick={() => {
                     toggleOffcanvas(false);
                   }}
