@@ -71,6 +71,7 @@ const Home = () => {
           </div>
           <div className="col-12 mt-3">
             <ImageGridCarousel
+              byProperty={true}
               info={countByProperty}
               photos={countByPropertyPhotos}
             />
@@ -86,7 +87,11 @@ const Home = () => {
             </p>
           </div>
           <div className="col-12 mt-3">
-            <ImageGridCarousel info={countByCity} photos={countByCityPhotos} />
+            <ImageGridCarousel
+              byProperty={false}
+              info={countByCity}
+              photos={countByCityPhotos}
+            />
           </div>
         </div>
       </div>

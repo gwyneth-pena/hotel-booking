@@ -2,9 +2,17 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "./ImageGridCarousel.css";
 import "swiper/swiper-bundle.css";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
+const ImageGridCarousel = ({
+  ...props
+}: {
+  info: any[];
+  photos: any[];
+  byProperty: boolean;
+}) => {
   const swiperRef = useRef<any>(null);
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(1);
   const [isEnd, setIsEnd] = useState(false);
   const reducedInfo = props.info?.reduce((acc, item) => {
@@ -22,6 +30,30 @@ const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
     if (swiperRef.current) {
       swiperRef.current.slidePrev();
     }
+  };
+
+  const handleCardClick = (name: string) => {
+    redirectToSearchResults(name);
+  };
+
+  const redirectToSearchResults = (name: string) => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const checkInDate = today.toISOString().split("T")[0];
+    const checkOutDate = tomorrow.toISOString().split("T")[0];
+    const pax = 1;
+
+    const queryParams = new URLSearchParams({
+      place: !props.byProperty ? name : "",
+      checkInDate,
+      checkOutDate,
+      pax: pax.toString(),
+    });
+
+    navigate(`/searchresults?${queryParams.toString()}`, {
+      state: { type: props.byProperty ? name.slice(0, -1) : "" },
+    });
   };
 
   return (
@@ -62,7 +94,12 @@ const ImageGridCarousel = ({ ...props }: { info: any[]; photos: any[] }) => {
 
           return (
             <SwiperSlide key={data?.id + data?.name}>
-              <div className="card rounded-3 shadow pt-0 px-0">
+              <div
+                onClick={() => {
+                  handleCardClick(data.name);
+                }}
+                className="card rounded-3 shadow pt-0 px-0 pointer"
+              >
                 <img
                   className="rounded-3"
                   src={data?.image || ""}

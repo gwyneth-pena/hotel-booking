@@ -3,9 +3,9 @@ import { useAuth } from "../context/AuthContext";
 import { ReactElement } from "react";
 
 const PrivateRoute = ({ children }: { children: ReactElement }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || user.isAdmin) {
     return <Navigate to="/" replace />;
   }
 

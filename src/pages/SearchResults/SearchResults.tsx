@@ -34,13 +34,18 @@ const SearchResults = () => {
     const checkOutDate = searchParams.get("checkOutDate") || "";
     const pax = searchParams.get("pax");
     const place = searchParams.get("place");
+    const type = history.state.usr.type;
 
     const res = await fetchHotelsSearchResult({
       city: place || state?.place,
       checkInDate: checkInDate,
       checkOutDate: checkOutDate,
       minPax: pax,
+      type: type,
     });
+
+    window.history.replaceState({}, "");
+
     const data =
       res?.[0]?.documents?.map((item: any) => {
         return {
@@ -73,7 +78,8 @@ const SearchResults = () => {
     <>
       <Helmet>
         <title>
-          Find the best deals in {searchParams.get("place")} | ComfyCorners
+          Find the best deals in {searchParams.get("place") || ""} |
+          ComfyCorners
         </title>
         <meta
           name="description"
@@ -107,7 +113,8 @@ const SearchResults = () => {
             <div className="row">
               <div className="col-12 col-md-9 d-flex justify-content-start ms-md-0 ps-md-0">
                 <h5 className="fw-bold">
-                  {toTitleCase(searchParams.get("place") || "")}:{" "}
+                  {toTitleCase(searchParams.get("place") || "")}
+                  {toTitleCase(searchParams.get("place") || "") ? ":" : ""}{" "}
                   {results.length}{" "}
                   {results.length > 1 ? "properties" : "property"} found
                 </h5>

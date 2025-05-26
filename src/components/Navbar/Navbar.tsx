@@ -58,13 +58,15 @@ const Navbar = () => {
                     {user?.firstName}
                   </p>
                   <OverlayPanel ref={avatarMenuRef}>
-                    <div className="pt-2 px-4">
-                      <Link to={"/bookings"}>
-                        {" "}
-                        <i className="ti ti-map-2 me-2" />
-                        Bookings
-                      </Link>
-                    </div>
+                    {!user.isAdmin && (
+                      <div className="pt-2 px-4">
+                        <Link to={"/bookings"}>
+                          {" "}
+                          <i className="ti ti-map-2 me-2" />
+                          Bookings
+                        </Link>
+                      </div>
+                    )}
                     <div className="pb-2 px-4">
                       <p className="my-1 p-0 cursor-pointer" onClick={logout}>
                         <i className="ti ti-logout me-2" /> Logout
@@ -158,11 +160,13 @@ const Navbar = () => {
           ) : (
             <>
               <div className="row">
-                <Link to={"/bookings"}>
-                  {" "}
-                  <i className="ti ti-map-2 me-4" />
-                  Bookings
-                </Link>
+                {!user.isAdmin && (
+                  <Link to={"/bookings"}>
+                    {" "}
+                    <i className="ti ti-map-2 me-4" />
+                    Bookings
+                  </Link>
+                )}
                 <Link
                   to=""
                   onClick={() => {

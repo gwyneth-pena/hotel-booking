@@ -6,6 +6,10 @@ img{
     height: 180px;
 }
 
+.pointer{
+  cursor: pointer;
+}
+
 .custom-swiper-button-prev,
 .custom-swiper-button-next {
   height: 30px;
