@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import Alert from "@mui/material/Alert";
 import "./LoginForm.css";
+import { Link } from "react-router-dom";
 
 const LoginForm = ({
   title,
@@ -29,7 +30,7 @@ const LoginForm = ({
     <div className="row login-form-container py-5 mt-5">
       <div className="col-12 mb-3">
         <h4 className="fw-bold">{title}</h4>
-        <p>{subtitle}.</p>
+        <p>{subtitle}</p>
       </div>
       <form
         className="col-12"
@@ -66,11 +67,11 @@ const LoginForm = ({
             required
           />
         </div>
-        <div className="form-group mb-4">
+        <div className="form-group mb-1">
           <label htmlFor="password" className="fw-bold mb-2">
             Password
           </label>
-          <div className="input-group mb-3">
+          <div className="input-group mb-2">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -97,8 +98,15 @@ const LoginForm = ({
             </span>
           </div>
         </div>
+
+        <div className="d-flex mb-3 justify-content-end">
+          <Link className="link-underline-hover small" to={"/forgot-password"}>
+            Forgot Password?
+          </Link>
+        </div>
+
         <button
-          className={clsx("btn btn-dark-blue w-100", {
+          className={clsx("btn btn-dark-blue w-100 mt-2", {
             "p-2": formState.isLoading,
           })}
           type="submit"

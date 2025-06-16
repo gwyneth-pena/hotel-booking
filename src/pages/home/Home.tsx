@@ -8,6 +8,7 @@ import countByPropertyPhotos from "../../assets/json/countByPropertyPhotos.json"
 import Footer from "../../components/Footer/Footer";
 import SearchBox from "../../components/SearchBox/SearchBox";
 import "./Home.css";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const apiURL = config.apiUrl;
@@ -53,7 +54,7 @@ const Home = () => {
                 Unwind and indulge in the comfort of home at these hotels and
                 homestays in the Philippines.
               </p>
-              <button className="btn btn-dark-blue w-25">Book yours</button>
+              <Link to={'/login'} className="btn btn-dark-blue w-25">Book yours</Link>
             </div>
           </div>
         </div>

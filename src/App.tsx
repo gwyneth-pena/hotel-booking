@@ -15,6 +15,7 @@ import Bookings from "./pages/Bookings/Bookings";
 import PrivateRoute from "./utils/PrivateRoute";
 import NotFound from "./pages/NotFound/NotFound";
 import SignUp from "./pages/SignUp/SignUp";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
 axios.defaults.withCredentials = true;
 
@@ -41,6 +42,14 @@ function App() {
                   element={
                     <PublicRoute>
                       <SignUp />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/forgot-password"
+                  element={
+                    <PublicRoute>
+                      <ForgotPassword />
                     </PublicRoute>
                   }
                 />

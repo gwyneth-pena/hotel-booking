@@ -231,7 +231,7 @@ const PropertyInfo = () => {
                     <tr key={idx}>
                       <td className="align-top">
                         <a
-                          className="text-primary fw-bold cursor-pointer"
+                          className="text-primary fw-bold cursor-pointer link-underline-hover"
                           onClick={() => {
                             handleRoomClick(room);
                           }}

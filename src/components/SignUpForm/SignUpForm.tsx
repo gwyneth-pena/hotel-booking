@@ -32,7 +32,7 @@ const SignUpForm = ({
     <div className="row signup-form-container py-5">
       <div className="col-12 mb-3">
         <h4 className="fw-bold">{title}</h4>
-        <p>{subtitle}.</p>
+        <p>{subtitle}</p>
       </div>
       <form
         className="col-12"

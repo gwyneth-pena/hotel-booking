@@ -64,6 +64,10 @@
   color: #474747 !important;
 }
 
+.link-underline-hover:hover{
+  text-decoration: underline;
+}
+
 
 @media (min-width: 1200px) {
   .container {
