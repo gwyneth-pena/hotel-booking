@@ -170,7 +170,7 @@ const ForgotPasswordForm = ({
               </div>
             </div>
             {formState.new_password !== formState.confirm_password && (
-              <p className="text-danger">Passwords should matched.</p>
+              <p className="text-danger">Passwords should match.</p>
             )}
           </>
         )}
