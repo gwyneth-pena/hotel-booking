@@ -82,7 +82,6 @@ const LoginForm = ({
                 setFormState({ ...formState, password: e.target.value })
               }
               autoComplete="current-password"
-              minLength={8}
               required
             />
             <span className="input-group-text">
