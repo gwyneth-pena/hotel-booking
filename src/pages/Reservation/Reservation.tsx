@@ -23,13 +23,14 @@ const Reservation = () => {
       const totalNights =
         getTotalNights(state?.checkOutDate, state?.checkInDate) || 0;
       setTotalNights(totalNights);
-      const totalPrice = Object.keys(state?.selectedRooms || {}).reduce(
-        (acc: number, key: string) => {
-          const room = state.selectedRooms[key];
-          return acc + (room?.price || 0);
-        },
-        0
-      );
+      const totalPrice =
+        Object.keys(state?.selectedRooms || {}).reduce(
+          (acc: number, key: string) => {
+            const room = state.selectedRooms[key];
+            return acc + (room?.price || 0);
+          },
+          0
+        ) * totalNights;
       setTotalPrice(totalPrice);
     }
   }, [navigate, state]);
@@ -127,6 +128,9 @@ const Reservation = () => {
                         );
                       }
                     )}
+                    <div className="col-12 mb-2 text-end">
+                      For {totalNights} {totalNights > 1 ? "nights" : "night"}
+                    </div>
                     <div className="col-6">
                       <h5 className="fw-bold">Total</h5>
                     </div>
