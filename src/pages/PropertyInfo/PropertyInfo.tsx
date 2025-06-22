@@ -112,7 +112,7 @@ const PropertyInfo = () => {
       totalRooms += room.number;
       totalPrice += room.price;
     });
-    return { totalRooms, totalPrice };
+    return { totalRooms, totalPrice:totalPrice*propertyInfo.totalNights };
   };
 
   const generateChoiceRooms = (name: any, rooms: any, price: number) => {
