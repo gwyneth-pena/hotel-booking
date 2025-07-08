@@ -16,6 +16,9 @@ import PrivateRoute from "./utils/PrivateRoute";
 import NotFound from "./pages/NotFound/NotFound";
 import SignUp from "./pages/SignUp/SignUp";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import Properties from "./pages/Properties/Properties";
+import AdminRoute from "./utils/AdminRoute";
+import Property from "./pages/Property/Property";
 
 axios.defaults.withCredentials = true;
 
@@ -63,7 +66,23 @@ function App() {
                       <Bookings />
                     </PrivateRoute>
                   }
-                />{" "}
+                />
+                <Route
+                  path="/properties"
+                  element={
+                    <AdminRoute>
+                      <Properties />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/properties/:id"
+                  element={
+                    <AdminRoute>
+                      <Property />
+                    </AdminRoute>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </ModalProvider>

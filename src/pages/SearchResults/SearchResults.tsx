@@ -34,7 +34,7 @@ const SearchResults = () => {
     const checkOutDate = searchParams.get("checkOutDate") || "";
     const pax = searchParams.get("pax");
     const place = searchParams.get("place");
-    const type = history.state.usr.type;
+    const type = history.state.usr?.type;
 
     const res = await fetchHotelsSearchResult({
       city: place || state?.place,
@@ -46,8 +46,9 @@ const SearchResults = () => {
 
     window.history.replaceState({}, "");
 
+    const documents = res.map((data: any) => data.documents).flat();
     const data =
-      res?.[0]?.documents?.map((item: any) => {
+      documents.map((item: any) => {
         return {
           ...item,
           totalNights: getTotalNights(checkOutDate, checkInDate),

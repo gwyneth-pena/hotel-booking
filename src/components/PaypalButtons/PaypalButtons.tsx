@@ -138,6 +138,12 @@ const PaypalButtons = ({ data }: { data: any }) => {
   const saveBooking = async (request: any) => {
     setLoading(true);
     try {
+      
+      if (!user.isAdmin) {
+        showErrorMessage();
+        return;
+      }
+
       const response = await axios.post(`${apiURL}/booking`, request);
       if (response.status === 200) {
         toast.current.show({

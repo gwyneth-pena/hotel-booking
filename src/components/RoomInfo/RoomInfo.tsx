@@ -28,7 +28,7 @@ const RoomInfo = ({ hideModal, data }: any) => {
     <>
       <Dialog
         visible={true}
-        className="room-info-dialog"
+        className="dialog-75"
         onHide={() => {
           hideModal();
         }}

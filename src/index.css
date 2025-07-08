@@ -31,6 +31,7 @@
 }
 
 .btn.btn-dark-blue{
+  min-width: max-content;
   padding: 12px 18px;
   background-color: var(--primary-color) !important;
   color: #fff !important;
@@ -67,6 +68,17 @@
 .link-underline-hover:hover{
   text-decoration: underline;
 }
+
+.dialog-75 {
+  width: 75%;
+}
+
+@media screen and (max-width: 980px) {
+  .dialog-75 {
+    width: 90%;
+  }
+}
+
 
 
 @media (min-width: 1200px) {

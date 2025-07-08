@@ -10,7 +10,7 @@ const SignUp = () => {
   const [signUpMessage, setSignUpMessage] = useState<string>("");
   const { login } = useAuth();
 
-  const getSumittedInfos = (e: any, data: any) => {
+  const getSubmittedInfos = (e: any, data: any) => {
     e.preventDefault();
     submitData(data);
   };
@@ -53,7 +53,7 @@ const SignUp = () => {
           title="Register"
           subtitle="Sign up today and find your perfect stay."
           message={signUpMessage}
-          passSubmittedInfos={getSumittedInfos}
+          passSubmittedInfos={getSubmittedInfos}
         />
       </div>
     </>

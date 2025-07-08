@@ -26,10 +26,8 @@ const Home = () => {
   );
 
   useEffect(() => {
-    if (countByCityReq.response) {
-      setCountByCity(countByCityReq.response);
-      setCountByProperty(countByPropertyReq.response);
-    }
+    setCountByCity(countByCityReq.response);
+    setCountByProperty(countByPropertyReq.response);
   }, [countByCityReq.response, countByPropertyReq.response]);
 
   return (
@@ -54,7 +52,9 @@ const Home = () => {
                 Unwind and indulge in the comfort of home at these hotels and
                 homestays in the Philippines.
               </p>
-              <Link to={'/login'} className="btn btn-dark-blue w-25">Book yours</Link>
+              <Link to={"/login"} className="btn btn-dark-blue w-25">
+                Book yours
+              </Link>
             </div>
           </div>
         </div>

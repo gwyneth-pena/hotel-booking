@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 import BookingInfo from "../../components/BookingInfo/BookingInfo";
 import { useModal } from "react-modal-hook";
 import LoadingOverlay from "../../components/LoadingOverlay/LoadingOverlay";
+import { Helmet } from "react-helmet-async";
 
 const Bookings = () => {
   const apiUrl = config.apiUrl;
@@ -83,29 +84,35 @@ const Bookings = () => {
   };
 
   return (
-    <div className="container py-5">
-      <h4>My bookings</h4>
+    <>
+      <Helmet>
+        <title>My Bookings | ComfyCorners</title>
+        <meta name="description" content="My Bookings" />
+      </Helmet>
+      <div className="container py-5">
+        <h4>My Bookings</h4>
 
-      <div className="row mt-5 h-full" style={{ height: "600px" }}>
-        <div className="col">
-          <Calendar
-            events={bookingsMapped}
-            localizer={localizer}
-            onNavigate={(date: Date) => {
-              getBookings(date);
-            }}
-            startAccessor="start"
-            endAccessor="end"
-            view={view}
-            onView={setView}
-            views={["month", "agenda"]}
-            onSelectEvent={handleSelectEvent}
-            onShowMore={handleShowMore}
-          />
+        <div className="row mt-5 h-full" style={{ height: "600px" }}>
+          <div className="col">
+            <Calendar
+              events={bookingsMapped}
+              localizer={localizer}
+              onNavigate={(date: Date) => {
+                getBookings(date);
+              }}
+              startAccessor="start"
+              endAccessor="end"
+              view={view}
+              onView={setView}
+              views={["month", "agenda"]}
+              onSelectEvent={handleSelectEvent}
+              onShowMore={handleShowMore}
+            />
+          </div>
         </div>
+        {loading && <LoadingOverlay />}
       </div>
-      {loading && <LoadingOverlay />}
-    </div>
+    </>
   );
 };
 

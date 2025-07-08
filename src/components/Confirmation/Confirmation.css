@@ -1,0 +1,7 @@
+.confirmation .btn{
+    height: 55px !important;
+}
+
+.confirmation .btn:hover{
+    color: var(--primary-color);
+}

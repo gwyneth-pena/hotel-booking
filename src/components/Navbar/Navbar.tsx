@@ -67,6 +67,15 @@ const Navbar = () => {
                         </Link>
                       </div>
                     )}
+                    {user.isAdmin && (
+                      <div className="pt-2 px-4">
+                        <Link to={"/properties"}>
+                          {" "}
+                          <i className="ti ti-map-2 me-2" />
+                          Properties
+                        </Link>
+                      </div>
+                    )}
                     <div className="pb-2 px-4">
                       <p className="my-1 p-0 cursor-pointer" onClick={logout}>
                         <i className="ti ti-logout me-2" /> Logout
@@ -165,6 +174,13 @@ const Navbar = () => {
                     {" "}
                     <i className="ti ti-map-2 me-4" />
                     Bookings
+                  </Link>
+                )}
+                {user.isAdmin && (
+                  <Link to={"/properties"}>
+                    {" "}
+                    <i className="ti ti-map-2 me-4" />
+                    Properties
                   </Link>
                 )}
                 <Link

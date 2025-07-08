@@ -1,0 +1,22 @@
+.properties-card .card-header {
+  background: #fff;
+  border: none !important;
+}
+
+.properties-card .description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.properties-card .view-btn {
+  background-color: #fff;
+  color: var(--primary-color);
+}
+
+.properties-card .ti{
+  font-size: 20px;
+  color: var(--primary-color);
+}
