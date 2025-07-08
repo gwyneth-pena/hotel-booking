@@ -139,7 +139,7 @@ const PaypalButtons = ({ data }: { data: any }) => {
     setLoading(true);
     try {
       
-      if (!user.isAdmin) {
+      if (user.isAdmin) {
         showErrorMessage();
         return;
       }
