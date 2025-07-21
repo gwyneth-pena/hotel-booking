@@ -132,7 +132,7 @@ const Properties = () => {
         <div className="row my-4">
           {properties.map((property: any, idx: number) => {
             return (
-              <div key={idx} className="col col-md-4">
+              <div key={idx} className="col-12 col-md-4">
                 <div className="card properties-card mb-3">
                   <div className="card-header">
                     <img

@@ -19,6 +19,7 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Properties from "./pages/Properties/Properties";
 import AdminRoute from "./utils/AdminRoute";
 import Property from "./pages/Property/Property";
+import ReservationMasterList from "./pages/ReservationMasterlist/ReservationMasterList";
 
 axios.defaults.withCredentials = true;
 
@@ -80,6 +81,14 @@ function App() {
                   element={
                     <AdminRoute>
                       <Property />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/reservation-masterlist"
+                  element={
+                    <AdminRoute>
+                      <ReservationMasterList />
                     </AdminRoute>
                   }
                 />

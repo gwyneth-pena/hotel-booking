@@ -1,99 +1,113 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { OverlayPanel } from "primereact/overlaypanel";
-import "./Navbar.css";
 import useScreenWidth from "../../hooks/useScreenWidth";
+import "./Navbar.css";
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const [isOffcanvasVisible, setIsOffcanvasVisible] = useState(false);
   const [hideOverlay, setHideOverlay] = useState(false);
-  const avatarMenuRef: any = useRef(null);
+  const avatarMenuRef = useRef<OverlayPanel>(null);
   const screenWidth = useScreenWidth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHideOverlay(screenWidth >= 621);
+  }, [screenWidth]);
+
+  const handleNav = (path: string) => {
+    toggleOffcanvas(false);
+    navigate(path);
+  };
 
   const toggleOffcanvas = (isOpen: boolean = true) => {
-    const backdrop: any = document.querySelector(".offcanvas-backdrop");
+    const backdrop = document.querySelector(
+      ".offcanvas-backdrop"
+    ) as HTMLElement;
     if (backdrop) {
       backdrop.style.display = isOpen ? "block" : "none";
     }
     setIsOffcanvasVisible(isOpen);
   };
 
-  useEffect(() => {
-    if (screenWidth < 621) {
-      setHideOverlay(false);
-    } else {
-      setHideOverlay(true);
-    }
-  }, []);
+  const renderAdminLinks = () => (
+    <>
+      <p
+        onClick={() => handleNav("/properties")}
+        className="pt-2 mb-1 px-4 d-block cursor-pointer"
+      >
+        <i className="ti ti-map-2 me-2" />
+        Properties
+      </p>
+      <p
+        onClick={() => handleNav("/reservation-masterlist")}
+        className="pt-0 mb-1 px-4 d-block cursor-pointer"
+      >
+        <i className="ti ti-list-details me-2" />
+        Reservation Masterlist
+      </p>
+    </>
+  );
+
+  const renderUserLinks = () => (
+    <p
+      onClick={() => handleNav("/bookings")}
+      className="pt-2 px-4 mb-1 d-block cursor-pointer"
+    >
+      <i className="ti ti-map-2 me-2" />
+      Bookings
+    </p>
+  );
+
+  const renderOverlayMenu = () => (
+    <>
+      <p
+        className="bg-primary text-white fw-bold m-0 p-0 cursor-pointer no-outline border-0"
+        onClick={(e) => avatarMenuRef.current?.toggle(e)}
+      >
+        <i className="ti ti-user me-2"></i>
+        {user?.firstName}
+      </p>
+      <OverlayPanel ref={avatarMenuRef}>
+        {user?.isAdmin ? renderAdminLinks() : renderUserLinks()}
+        <div className="pb-2 px-4">
+          <p className="my-1 p-0 cursor-pointer" onClick={logout}>
+            <i className="ti ti-logout me-2" /> Logout
+          </p>
+        </div>
+      </OverlayPanel>
+    </>
+  );
+
+  const renderUnauthenticatedLinks = () => (
+    <>
+      <Link to="/register" className="btn me-2">
+        Register
+      </Link>
+      <Link to="/login" className="btn">
+        Sign in
+      </Link>
+    </>
+  );
 
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-primary py-2 py-md-3">
         <div className="container d-flex justify-content-between">
-          <a className="navbar-brand text-white" href="/">
+          <Link className="navbar-brand text-white" to="/">
             ComfyCorners
-          </a>
-          {!isAuthenticated ? (
-            <div className="collapse navbar-collapse d-sm-none">
-              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <Link to="/register" className="btn me-2">
-                  Register
-                </Link>
-                <Link to="/login" className="btn">
-                  Sign in
-                </Link>
-              </ul>
-            </div>
-          ) : (
-            <div className="flex justify-content-end">
-              {hideOverlay && (
-                <>
-                  <p
-                    className="bg-primary text-white fw-bold m-0 p-0 cursor-pointer no-outline border-0"
-                    onClick={(e) => avatarMenuRef.current.toggle(e)}
-                  >
-                    <i className="ti ti-user me-2"></i>
-                    {user?.firstName}
-                  </p>
-                  <OverlayPanel ref={avatarMenuRef}>
-                    {!user.isAdmin && (
-                      <div className="pt-2 px-4">
-                        <Link to={"/bookings"}>
-                          {" "}
-                          <i className="ti ti-map-2 me-2" />
-                          Bookings
-                        </Link>
-                      </div>
-                    )}
-                    {user.isAdmin && (
-                      <div className="pt-2 px-4">
-                        <Link to={"/properties"}>
-                          {" "}
-                          <i className="ti ti-map-2 me-2" />
-                          Properties
-                        </Link>
-                      </div>
-                    )}
-                    <div className="pb-2 px-4">
-                      <p className="my-1 p-0 cursor-pointer" onClick={logout}>
-                        <i className="ti ti-logout me-2" /> Logout
-                      </p>
-                    </div>
-                  </OverlayPanel>
-                </>
-              )}
-            </div>
-          )}
+          </Link>
+          <div className="d-none d-sm-block">
+            {!isAuthenticated
+              ? renderUnauthenticatedLinks()
+              : hideOverlay && renderOverlayMenu()}
+          </div>
           <button
             className="navbar-toggler"
             type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvas"
-            onClick={() => {
-              toggleOffcanvas(true);
-            }}
+            onClick={() => toggleOffcanvas(true)}
             aria-expanded={isOffcanvasVisible}
             aria-label="Toggle navigation"
           >
@@ -101,99 +115,66 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
+
       <div
         className={`offcanvas offcanvas-start ${
           isOffcanvasVisible ? "show" : ""
         }`}
         id="offcanvas"
-        aria-labelledby="offcanvasLabel"
         style={{ visibility: isOffcanvasVisible ? "visible" : "hidden" }}
       >
         <div className="offcanvas-header bg-primary">
-          <h5 className="offcanvas-title text-white" id="offcanvasLabel">
-            ComfyCorners
-          </h5>
+          <h5 className="offcanvas-title text-white">ComfyCorners</h5>
           <button
             type="button"
             className="custom-close-btn ms-auto"
-            data-bs-dismiss="offcanvas"
+            onClick={() => toggleOffcanvas(false)}
             aria-label="Close"
           >
             <i className="ti ti-x"></i>
           </button>
         </div>
+
         <div className="offcanvas-body">
           {isAuthenticated && (
-            <p className="text-primary fw-bold mx-0 px-0 no-outline border-0">
+            <p className="text-primary fw-bold">
               <i className="ti ti-user me-4"></i>
               {user?.firstName}
             </p>
           )}
           {!isAuthenticated ? (
             <>
-              {" "}
-              <div className="row">
-                <Link
-                  to="/"
-                  onClick={() => {
-                    toggleOffcanvas(false);
-                  }}
-                  className="col-12"
-                >
-                  <i className="ti ti-home me-4"></i>Home Page
-                </Link>
-              </div>
-              <div className="row">
-                <Link
-                  to="/register"
-                  onClick={() => {
-                    toggleOffcanvas(false);
-                  }}
-                  className="col-12"
-                >
-                  <i className="ti ti-users-plus me-4"></i>Register
-                </Link>
-              </div>
-              <div className="row">
-                <Link
-                  to="/login"
-                  onClick={() => {
-                    toggleOffcanvas(false);
-                  }}
-                  className="col-12"
-                >
-                  <i className="ti ti-login me-4"></i>Sign in
-                </Link>
-              </div>
+              <p
+                onClick={() => handleNav("/")}
+                className="d-block mb-2 cursor-pointer"
+              >
+                <i className="ti ti-home me-4"></i>Home Page
+              </p>
+              <p
+                onClick={() => handleNav("/register")}
+                className="d-block mb-2 cursor-pointer"
+              >
+                <i className="ti ti-users-plus me-4"></i>Register
+              </p>
+              <p
+                onClick={() => handleNav("/login")}
+                className="d-block mb-2 cursor-pointer"
+              >
+                <i className="ti ti-login me-4"></i>Sign in
+              </p>
             </>
           ) : (
             <>
-              <div className="row">
-                {!user.isAdmin && (
-                  <Link to={"/bookings"}>
-                    {" "}
-                    <i className="ti ti-map-2 me-4" />
-                    Bookings
-                  </Link>
-                )}
-                {user.isAdmin && (
-                  <Link to={"/properties"}>
-                    {" "}
-                    <i className="ti ti-map-2 me-4" />
-                    Properties
-                  </Link>
-                )}
-                <Link
-                  to=""
-                  onClick={() => {
-                    logout(true);
-                    toggleOffcanvas(false);
-                  }}
-                  className="col-12"
-                >
-                  <i className="ti ti-logout me-4"></i>Log out
-                </Link>
-              </div>
+              {user?.isAdmin ? renderAdminLinks() : renderUserLinks()}
+              <p
+                onClick={() => {
+                  logout(true);
+                  toggleOffcanvas(false);
+                }}
+                className="d-block mt-3 cursor-pointer"
+              >
+                <i className="ti ti-logout me-4"></i>Log out
+              </p>
             </>
           )}
         </div>
