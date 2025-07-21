@@ -40,12 +40,19 @@ const GuestReservationInfo = ({ hideModal, data }: any) => {
               Guest: {toTitleCase(data?.user?.firstName || "")}{" "}
               {toTitleCase(data?.user?.lastName || "")}
             </h5>
+            <small>Email: {data?.user?.username}</small>
+            <br/>
+            {data?.user?.mobileNumber && (
+              <small>Mobile Number: {data?.user?.mobileNumber}</small>
+            )}
+            <br />
             <br />
             <p className="fw-bold">Booking Details</p>
-            <p>
+            <small>
               <b>{toTitleCase(data?.bookedRooms?.[0]?.hotel?.name || "")}</b> (
               {toTitleCase(data?.bookedRooms?.[0]?.hotel?.address || "")})
-            </p>
+            </small>
+            <br />
             <small>
               Check-in Date:{" "}
               {toLongDateString(data?.bookedRooms?.[0]?.checkInDate)}
