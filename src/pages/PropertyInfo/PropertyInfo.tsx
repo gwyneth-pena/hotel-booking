@@ -112,7 +112,7 @@ const PropertyInfo = () => {
       totalRooms += room.number;
       totalPrice += room.price;
     });
-    return { totalRooms, totalPrice:totalPrice*propertyInfo.totalNights };
+    return { totalRooms, totalPrice: totalPrice * propertyInfo.totalNights };
   };
 
   const generateChoiceRooms = (name: any, rooms: any, price: number) => {
@@ -280,16 +280,25 @@ const PropertyInfo = () => {
                                   : "rooms"}{" "}
                                 for{" "}
                               </p>
-                              <h5 className="mb-5 fw-bold">
+                              <h5 className="fw-bold">
                                 Php{" "}
                                 {totalReservedRoomsInfo.totalPrice.toLocaleString()}
                               </h5>
+                              <small>
+                                (
+                                {`${propertyInfo.totalNights} ${
+                                  propertyInfo.totalNights > 1
+                                    ? "nights"
+                                    : "night"
+                                }`}
+                                )
+                              </small>
                             </>
                           )}
                           {idx == 0 && (
                             <button
                               onClick={handleReservationClick}
-                              className="btn btn-dark-blue w-100"
+                              className="btn btn-dark-blue w-100 mt-3"
                               type="button"
                             >
                               I'll reserve
