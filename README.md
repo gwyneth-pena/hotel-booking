@@ -1,4 +1,4 @@
-PAYPAL TEST ACCOUNT LOGIN:
+PAYPAL TEST ACCOUNT LOGIN (For booking):
 email: sb-hst3e44526965@personal.example.com
 password: a@1dRt_G
 
