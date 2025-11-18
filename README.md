@@ -1,3 +1,4 @@
+DEPLOYED: hotel-booking-delta-two.vercel.app
 PAYPAL TEST ACCOUNT LOGIN (For booking):
 email: sb-hst3e44526965@personal.example.com
 password: a@1dRt_G
