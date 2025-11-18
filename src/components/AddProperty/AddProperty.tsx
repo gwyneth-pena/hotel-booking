@@ -8,6 +8,8 @@ import LoadingOverlay from "../LoadingOverlay/LoadingOverlay";
 import axios from "axios";
 import { Toast } from "primereact/toast";
 import clsx from "clsx";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 const AddProperty = ({ hideModal, emitSavedData }: any) => {
   const apiUrl = config.apiUrl;
@@ -179,16 +181,14 @@ const AddProperty = ({ hideModal, emitSavedData }: any) => {
                 <label htmlFor="description" className="fw-bold mb-2">
                   Description
                 </label>
-                <textarea
+                <ReactQuill
+                  theme="snow"
                   value={formState.description}
-                  className="form-control"
-                  name="description"
                   id="description"
                   placeholder="Add description"
-                  onChange={(e) =>
-                    setFormState({ ...formState, description: e.target.value })
+                  onChange={(value) =>
+                    setFormState({ ...formState, description: value })
                   }
-                  required
                 />
               </div>
               <div className="form-group mb-4 col-4">
@@ -298,7 +298,7 @@ const AddProperty = ({ hideModal, emitSavedData }: any) => {
                 "p-2": formState.isLoading,
               })}
               type="submit"
-              disabled={formState.isLoading}
+              disabled={formState.isLoading || !formState.description.trim()}
             >
               {formState.isLoading ? (
                 <img className="loader" src="/images/loader.gif" />

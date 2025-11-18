@@ -8,6 +8,8 @@ import { Toast } from "primereact/toast";
 import { supabase } from "../../utils/supabase";
 import axios from "axios";
 import "./AddRoom.css";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 const AddRoom = ({ hideModal, emitSavedData, data }: any) => {
   const apiUrl = config.apiUrl;
@@ -145,16 +147,14 @@ const AddRoom = ({ hideModal, emitSavedData, data }: any) => {
                 <label htmlFor="description" className="fw-bold mb-2">
                   Description
                 </label>
-                <textarea
+                <ReactQuill
+                  theme="snow"
                   value={formState.description}
-                  className="form-control"
-                  name="description"
                   id="description"
                   placeholder="Add description"
-                  onChange={(e) =>
-                    setFormState({ ...formState, description: e.target.value })
+                  onChange={(value) =>
+                    setFormState({ ...formState, description: value })
                   }
-                  required
                 />
               </div>
 

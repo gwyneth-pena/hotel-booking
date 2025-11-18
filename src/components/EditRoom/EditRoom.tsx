@@ -7,6 +7,8 @@ import { useRef, useState, useEffect } from "react";
 import config from "../../config";
 import { supabase } from "../../utils/supabase";
 import "./EditRoom.css";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 const EditRoom = ({ hideModal, emitSavedData, data }: any) => {
   const apiUrl = config.apiUrl;
@@ -206,16 +208,14 @@ const EditRoom = ({ hideModal, emitSavedData, data }: any) => {
                 <label htmlFor="description" className="fw-bold mb-2">
                   Description
                 </label>
-                <textarea
+                <ReactQuill
+                  theme="snow"
                   value={formState.description}
-                  className="form-control"
-                  name="description"
                   id="description"
-                  placeholder="Add description"
-                  onChange={(e) =>
-                    setFormState({ ...formState, description: e.target.value })
+                  placeholder="Edit description"
+                  onChange={(value) =>
+                    setFormState({ ...formState, description: value })
                   }
-                  required
                 />
               </div>
 

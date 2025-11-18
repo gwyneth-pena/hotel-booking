@@ -6,7 +6,7 @@ export default defineConfig({
   base: "/",
   plugins: [react()],
   optimizeDeps: {
-    include: ["lodash"],
+    include: ["lodash", "react-quill"],
   },
-  appType: 'spa'
+  appType: "spa",
 });

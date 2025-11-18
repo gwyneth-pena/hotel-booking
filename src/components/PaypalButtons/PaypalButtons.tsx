@@ -112,7 +112,6 @@ const PaypalButtons = ({ data }: { data: any }) => {
 
     const requests = {
       user: user.id,
-      status: "CONFIRMED",
       rooms: [
         {
           hotel: hotelId,
@@ -120,6 +119,7 @@ const PaypalButtons = ({ data }: { data: any }) => {
           checkInDate: checkIn,
           checkOutDate: checkOut,
           totalPrice: data.totalPrice,
+          status: 'confirmed'
         },
       ],
     };
