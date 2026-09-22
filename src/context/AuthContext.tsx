@@ -70,11 +70,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getUser = async (id: string) => {
+    if (!id) return null;
+  
     try {
-      const userReq = await axios.get(`${apiURL}/users/my-data/${id}`);
+      const userReq = await axios.get(`${apiURL}/users/my-data/${id}`, {
+        withCredentials: true,
+      });
+  
       return userReq.data;
     } catch (e) {
+      console.error("Failed to fetch user:", e);
       logout();
+      return null;
     }
   };
 
