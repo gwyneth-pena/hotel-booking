@@ -8,8 +8,9 @@ import {
 } from "react";
 import { decodeToken, isTokenValid } from "../utils/token";
 import axios from "axios";
-import config from "../config";
 import { useNavigate } from "react-router-dom";
+
+axios.defaults.withCredentials = true;
 
 const initialState = {
   token: localStorage.getItem("token") || null,
@@ -41,7 +42,7 @@ const AuthReducer = (state: any, action: any) => {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const apiURL = config.apiUrl;
+  const apiURL = "/api";
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(AuthReducer, initialState);
   const [initialized, setInitialized] = useState(false);
@@ -65,18 +66,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async (redirect = false) => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
-    const loggedOutRes = await axios.post(`${apiURL}/auth/logout`);
-    if (loggedOutRes.status === 200 && redirect) navigate("/");
+    try {
+      const loggedOutRes = await axios.post(`${apiURL}/auth/logout`);
+      if (loggedOutRes.status === 200 && redirect) navigate("/");
+    } catch (e) {
+      console.error("Logout request failed:", e);
+    }
   };
 
   const getUser = async (id: string) => {
     if (!id) return null;
-  
+
     try {
-      const userReq = await axios.get(`${apiURL}/users/my-data/${id}`, {
-        withCredentials: true,
-      });
-  
+      const userReq = await axios.get(`${apiURL}/users/my-data/${id}`);
       return userReq.data;
     } catch (e) {
       console.error("Failed to fetch user:", e);
